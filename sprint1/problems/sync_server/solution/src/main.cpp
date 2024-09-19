@@ -8,6 +8,7 @@
 #include <boost/asio/write.hpp>
 #include <iostream> 
 #include <thread>
+#include <optional>
 
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
