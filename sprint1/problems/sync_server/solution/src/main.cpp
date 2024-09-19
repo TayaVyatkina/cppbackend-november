@@ -81,10 +81,10 @@ StringResponse HandleRequest(StringRequest&& req) {
     };
 
     // Здесь можно обработать запрос и сформировать ответ
-    if (req.method() != http::verb::get){
+    if (req.method() == http::verb::get){
         return text_response(http::status::ok, "Hello, "s.append(req.target().substr(1)) );
     }
-    else if (req.method() != http::verb::head){
+    else if (req.method() == http::verb::head){
         return text_response(http::status::ok);
     }
     else{
