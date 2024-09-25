@@ -142,7 +142,7 @@ private:
     std::optional<Clock::time_point> baking_start_time_;
     std::optional<Clock::time_point> baking_end_time_;
 };
-c
+
 // Склад ингредиентов (возвращает ингредиенты с уникальным id)
 class Store {
 public:
