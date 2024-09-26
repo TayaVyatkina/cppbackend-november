@@ -25,14 +25,13 @@ public:
     // Запрещаем копирование и присваивание объектов SessionBase и его наследников
     SessionBase(const SessionBase&) = delete;
     SessionBase& operator=(const SessionBase&) = delete;
-
     void Run();
 protected:
     using HttpRequest = http::request<http::string_body>;
+    explicit SessionBase(tcp::socket&& socket)
+        : stream_(std::move(socket)) {
+    }
     ~SessionBase() = default;
-
-    explicit SessionBase(tcp::socket&& socket);
-
 
     template <typename Body, typename Fields>
     void Write(http::response<Body, Fields>&& response) {
@@ -52,15 +51,12 @@ private:
     HttpRequest request_;
 
     void Read();
-    void OnRead(beast::error_code ec, [[maybe_unused]] std::size_t bytes_read) ;
-    void OnWrite(bool close, beast::error_code ec, [[maybe_unused]] std::size_t bytes_written) ;
-    void Close() ;
-
+    void OnRead(beast::error_code ec, [[maybe_unused]] std::size_t bytes_read);
+    virtual std::shared_ptr<SessionBase> GetSharedThis() = 0;
+    void Close();
     // Обработку запроса делегируем подклассу
     virtual void HandleRequest(HttpRequest&& request) = 0;
-
-    virtual std::shared_ptr<SessionBase> GetSharedThis() = 0;
-
+    void OnWrite(bool close, beast::error_code ec, [[maybe_unused]] std::size_t bytes_written);
 };
 
 template <typename RequestHandler>
@@ -76,8 +72,7 @@ private:
 
     std::shared_ptr<SessionBase> GetSharedThis() override {
         return this->shared_from_this();
-    }  
-
+    } 
     void HandleRequest(HttpRequest&& request) override {
         // Захватываем умный указатель на текущий объект Session в лямбде,
         // чтобы продлить время жизни сессии до вызова лямбды.
@@ -86,8 +81,6 @@ private:
             self->Write(std::move(response));
         });
     }
-
-
 };
 
 template <typename RequestHandler>
@@ -113,16 +106,14 @@ public:
         // Благодаря этому новые подключения будут помещаться в очередь ожидающих соединений
         acceptor_.listen(net::socket_base::max_listen_connections);
     }
-
     void Run() {
         DoAccept();
     }
-
 private:
     net::io_context& ioc_;
     tcp::acceptor acceptor_;
     RequestHandler request_handler_;
-
+    
     void DoAccept() {
         acceptor_.async_accept(
             // Передаём последовательный исполнитель, в котором будут вызываться обработчики
@@ -138,7 +129,6 @@ private:
             // std::bind(&Listener::OnAccept, this->shared_from_this(), ph::_1, ph::_2)
             beast::bind_front_handler(&Listener::OnAccept, this->shared_from_this()));
     }
-
     // Метод socket::async_accept создаст сокет и передаст его передан в OnAccept
     void OnAccept(sys::error_code ec, tcp::socket socket) {
         using namespace std::literals;
@@ -157,9 +147,8 @@ private:
     void AsyncRunSession(tcp::socket&& socket) {
         std::make_shared<Session<RequestHandler>>(std::move(socket), request_handler_)->Run();
     }
-
+    
 };
-
 
 template <typename RequestHandler>
 void ServeHttp(net::io_context& ioc, const tcp::endpoint& endpoint, RequestHandler&& handler) {

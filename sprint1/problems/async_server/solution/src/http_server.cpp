@@ -4,23 +4,16 @@
 #include <iostream>
 
 namespace http_server {
-
+    
 void ReportError(beast::error_code ec, std::string_view what) {
     std::cerr << what << ": "sv << ec.message() << std::endl;
 }
-
 void SessionBase::Run() {
     // Вызываем метод Read, используя executor объекта stream_.
     // Таким образом вся работа со stream_ будет выполняться, используя его executor
     net::dispatch(stream_.get_executor(),
                   beast::bind_front_handler(&SessionBase::Read, GetSharedThis()));
 }
-
-SessionBase::SessionBase(tcp::socket&& socket)
-    : stream_(std::move(socket)) {
-}
-
-
 void SessionBase::Read() {
     using namespace std::literals;
     // Очищаем запрос от прежнего значения (метод Read может быть вызван несколько раз)
@@ -31,7 +24,6 @@ void SessionBase::Read() {
                         // По окончании операции будет вызван метод OnRead
                         beast::bind_front_handler(&SessionBase::OnRead, GetSharedThis()));
 }
-
 void SessionBase::OnRead(beast::error_code ec, [[maybe_unused]] std::size_t bytes_read) {
     using namespace std::literals;
     if (ec == http::error::end_of_stream) {
@@ -43,7 +35,10 @@ void SessionBase::OnRead(beast::error_code ec, [[maybe_unused]] std::size_t byte
     }
     HandleRequest(std::move(request_));
 }
-
+void SessionBase::Close() {
+    beast::error_code ec;
+    stream_.socket().shutdown(tcp::socket::shutdown_send, ec);
+}
 void SessionBase::OnWrite(bool close, beast::error_code ec, [[maybe_unused]] std::size_t bytes_written) {
     if (ec) {
         return ReportError(ec, "write"sv);
@@ -58,10 +53,5 @@ void SessionBase::OnWrite(bool close, beast::error_code ec, [[maybe_unused]] std
     Read();
 }
 
-
-void SessionBase::Close() {
-    beast::error_code ec;
-    stream_.socket().shutdown(tcp::socket::shutdown_send, ec);
-}
 
 }  // namespace http_server
