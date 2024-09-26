@@ -38,8 +38,20 @@ StringResponse MakeStringResponse(http::status status, std::string_view body, un
 }
 
 StringResponse HandleRequest(StringRequest&& req) {
-    // Подставьте сюда код из синхронной версии HTTP-сервера
-    return MakeStringResponse(http::status::ok, "OK"sv, req.version(), req.keep_alive());
+    const auto text_response = [&req](http::status status, std::string_view text = "") {
+        return MakeStringResponse(status, text, req.version(), req.keep_alive());
+    };
+
+    // Здесь можно обработать запрос и сформировать ответ
+    if (req.method() == http::verb::get){
+        return text_response(http::status::ok, "Hello, "s.append(req.target().substr(1)) );
+    }
+    else if (req.method() == http::verb::head){
+        return text_response(http::status::ok);
+    }
+    else{
+        return text_response(http::status::method_not_allowed, "Invalid method");
+    }
 }
 
 // Запускает функцию fn на n потоках, включая текущий
@@ -57,6 +69,7 @@ void RunWorkers(unsigned n, const Fn& fn) {
 
 }  // namespace
 
+
 int main() {
     const unsigned num_threads = std::thread::hardware_concurrency();
 
@@ -66,14 +79,20 @@ int main() {
     net::signal_set signals(ioc, SIGINT, SIGTERM);
     signals.async_wait([&ioc](const sys::error_code& ec, [[maybe_unused]] int signal_number) {
         if (!ec) {
+            std::cout << "Signal "sv << signal_number << " received"sv << std::endl;
             ioc.stop();
         }
+    });
+
+    net::steady_timer t{ioc, 30s};
+    t.async_wait([](sys::error_code ec) {
+        std::cout << "Timer expired"s << std::endl;
     });
 
     const auto address = net::ip::make_address("0.0.0.0");
     constexpr net::ip::port_type port = 8080;
     http_server::ServeHttp(ioc, {address, port}, [](auto&& req, auto&& sender) {
-        // sender(HandleRequest(std::forward<decltype(req)>(req)));
+        sender(HandleRequest(std::forward<decltype(req)>(req)));
     });
 
     // Эта надпись сообщает тестам о том, что сервер запущен и готов обрабатывать запросы
