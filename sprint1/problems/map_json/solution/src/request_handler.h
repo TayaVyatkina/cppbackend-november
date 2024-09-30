@@ -42,7 +42,10 @@ public:
 
 private:
     model::Game& game_;
+
     StringResponse HandleRequest(StringRequest&& req) ;    
+
+
 };
 
 }  // namespace http_handler

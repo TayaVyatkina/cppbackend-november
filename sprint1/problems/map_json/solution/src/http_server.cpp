@@ -64,4 +64,8 @@ void SessionBase::Close() {
     stream_.socket().shutdown(tcp::socket::shutdown_send, ec);
 }
 
+
+
+
+
 }  // namespace http_server

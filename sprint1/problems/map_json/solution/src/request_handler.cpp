@@ -75,6 +75,4 @@ StringResponse RequestHandler::HandleRequest(StringRequest&& req) {
     return text_response(http::status::ok, body);
 }    
 
-
-
-}
+}  // namespace http_handler
