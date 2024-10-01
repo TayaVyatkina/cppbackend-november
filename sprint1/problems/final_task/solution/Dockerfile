@@ -4,9 +4,9 @@ FROM gcc:11.3 as build
 RUN apt update && \
     apt install -y \
       python3-pip \
-      cmake \
-    && \
-    pip3 install conan
+      cmake 
+    
+RUN pip3 install conan==1.64.1
 
 # Запуск conan как раньше
 COPY conanfile.txt /app/
