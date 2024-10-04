@@ -2,7 +2,7 @@
 
 #include <chrono>
 #include <iomanip>
-#include <sstream>
+#include <syncstream>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -47,6 +47,32 @@ class Logger {
         return ss.str();
     }
 
+    void CheckNameLogFile(const std::chrono::_V2::system_clock::time_point now){
+        const auto t_c = std::chrono::system_clock::to_time_t(now);
+        int day_of_month = std::localtime(&t_c)->tm_mday;
+        if(day_of_file_ != day_of_month){
+            day_of_file_ = day_of_month;
+            std::string file_name = "/var/log/sample_log_"s + GetFileTimeStamp(now) + ".log"s;
+            log_file_.close(); 
+            log_file_.open(file_name);
+            if (!log_file_) {
+                throw std::runtime_error("File not open!"s);
+            }
+        }
+    }
+
+    // Функция для вывода одного и более значений
+    template <typename T0, typename... Ts>
+    void LogImpl(std::ostream& out, const T0& v0, const Ts&... vs) {
+        using namespace std::literals;
+        //std::lock_guard lg(m_);
+        out << GetTimeStamp() << ": "sv << v0 << std::endl;
+        // Выводим остальные параметры, если они остались
+        if constexpr (sizeof...(vs) != 0) {
+            LogImpl(out, vs...);  // Рекурсивно выводим остальные параметры
+        }
+    }
+ 
     // конструктор теперь приватный
     Logger() = default;
     // убираем конструктор копирования
@@ -59,36 +85,8 @@ public:
         return obj;
     }
 
-    
-    // Функция для вывода одного и более значений
-    template <typename T0, typename... Ts>
-    void LogImpl(std::ostream& out, const T0& v0, const Ts&... vs) {
-        using namespace std::literals;
-        //std::lock_guard lg(m_);
-        out << GetTimeStamp() << ": "sv << v0 << std::endl;
-        // Выводим остальные параметры, если они остались
-        if constexpr (sizeof...(vs) != 0) {
-            LogImpl(out, vs...);  // Рекурсивно выводим остальные параметры
-        }
-    }
-
-    void CheckNameLogFile(const std::chrono::_V2::system_clock::time_point now){
-        const auto t_c = std::chrono::system_clock::to_time_t(now);
-        int day_of_month = std::localtime(&t_c)->tm_mday;
-        if(day_of_file_ != day_of_month){
-            day_of_file_ = day_of_month;
-            std::string file_name = "/var/log/sample_log_"s + GetFileTimeStamp(now) + ".log"s;
-            log_file_.close(); 
-            log_file_.open(file_name); //, std::ios::app
-            if (!log_file_) {
-                throw std::runtime_error("File not open!"s);
-            }
-        }
-    }
-
     // Выведите в поток все аргументы.
-    //template<class... Ts>
-    template <typename... Ts>
+    template<class... Ts>
     void Log(const Ts&... args) {
         const auto now = GetTime();
         std::stringstream strm;
