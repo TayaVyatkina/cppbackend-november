@@ -4,14 +4,14 @@ FROM gcc:11.3 as build
 RUN apt update && \
     apt install -y \
       python3-pip \
-      cmake 
-    
-RUN pip3 install conan==1.64.1
+      cmake \
+    && \
+    pip3 install conan
 
 # Запуск conan как раньше
 COPY conanfile.txt /app/
 RUN mkdir /app/build && cd /app/build && \
-    conan install .. --build=missing -s build_type=Release -s 
+    conan install .. --build=missing -s build_type=Release -s compiler.libcxx=libstdc++11
 
 # Папка data больше не нужна
 COPY ./src /app/src
