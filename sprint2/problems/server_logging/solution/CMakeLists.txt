@@ -29,7 +29,6 @@ add_executable(game_server
 	src/request_handler.h
 	src/boost_log.cpp
 	src/boost_log.h
-	src/logger.cpp
 	src/logger.h
 )
 # используем "импортированную" цель CONAN_PKG::boost

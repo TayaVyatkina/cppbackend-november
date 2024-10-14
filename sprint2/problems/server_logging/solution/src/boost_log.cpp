@@ -1,5 +1,5 @@
 #include "boost_log.h"   
-#include <boost/log/trivial.hpp>     // для BOOST_LOG_TRIVIAL
+//#include <boost/log/trivial.hpp>     // для BOOST_LOG_TRIVIAL
 #include <boost/log/core.hpp>        // для logging::core
 #include <boost/log/expressions.hpp> // для выражения, задающего фильтр
 #include <boost/date_time.hpp>
@@ -8,15 +8,9 @@
 #include <boost/log/utility/manipulators/add_value.hpp>
 #include <boost/json.hpp>
 
-
-
-
 using namespace std::literals;
 
-
-
-//---------------------------------------------------------------
-namespace logging = boost::log;
+//namespace logging = boost::log;
 namespace sinks = boost::log::sinks;
 namespace keywords = boost::log::keywords;
 namespace expr = boost::log::expressions;
@@ -25,7 +19,6 @@ namespace json = boost::json;
 
 namespace boost_log {
 
-// BOOST_LOG_ATTRIBUTE_KEYWORD(line_id, "LineID", unsigned int)
 BOOST_LOG_ATTRIBUTE_KEYWORD(timestamp, "TimeStamp", boost::posix_time::ptime)
 BOOST_LOG_ATTRIBUTE_KEYWORD(additional_data, "AdditionalData", json::value)
 
