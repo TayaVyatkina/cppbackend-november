@@ -1,23 +1,38 @@
 #pragma once
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include <random>
-#include <sstream>
 
 #include "tagged.h"
 
+#include <cassert>
+#include <iomanip>
+#include <random>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 namespace model {
 
-using Dimension = int;
-using Coord = Dimension;
+namespace detail {
+struct TokenTag {};
+}  // namespace detail
+
+using Token = util::Tagged<std::string, detail::TokenTag>;
+using TokenHasher = util::TaggedHasher<Token>;
+
+using namespace std::literals;
+
+using Dimention = int;
+using Coord = Dimention;
+
+class GameSession;
 
 struct Point {
     Coord x, y;
 };
 
 struct Size {
-    Dimension width, height;
+    Dimention width, height;
 };
 
 struct Rectangle {
@@ -26,31 +41,42 @@ struct Rectangle {
 };
 
 struct Offset {
-    Dimension dx, dy;
+    Dimention dx, dy;
 };
 
-class Road {
-    struct HorizontalTag {
+class Element {
+public:
+    void SetKeySequence(std::string str) {
+        keys_.push_back(str);
+    }
+
+    std::vector<std::string> GetKeys() const {
+        return keys_;
+    }
+private:
+    std::vector<std::string> keys_;
+};
+
+class Road : public Element {
+    struct  HorizontalTag {
         explicit HorizontalTag() = default;
     };
 
     struct VerticalTag {
         explicit VerticalTag() = default;
     };
-
+    
 public:
     constexpr static HorizontalTag HORIZONTAL{};
     constexpr static VerticalTag VERTICAL{};
 
-    Road(HorizontalTag, Point start, Coord end_x) noexcept
-        : start_{start}
-        , end_{end_x, start.y} {
-    }
+    Road(HorizontalTag, Point start, Coord end_x) noexcept :
+        start_{start},
+        end_{end_x, start.y} {}
 
-    Road(VerticalTag, Point start, Coord end_y) noexcept
-        : start_{start}
-        , end_{start.x, end_y} {
-    }
+    Road(VerticalTag, Point start, Coord end_y) noexcept :
+        start_{start},
+        end_{start.x, end_y} {}
 
     bool IsHorizontal() const noexcept {
         return start_.y == end_.y;
@@ -73,11 +99,10 @@ private:
     Point end_;
 };
 
-class Building {
+class Building : public Element {
 public:
-    explicit Building(Rectangle bounds) noexcept
-        : bounds_{bounds} {
-    }
+    explicit Building(Rectangle bounds) noexcept :
+        bounds_{bounds} {}
 
     const Rectangle& GetBounds() const noexcept {
         return bounds_;
@@ -87,15 +112,13 @@ private:
     Rectangle bounds_;
 };
 
-class Office {
+class Office : public Element {
 public:
     using Id = util::Tagged<std::string, Office>;
-
-    Office(Id id, Point position, Offset offset) noexcept
-        : id_{std::move(id)}
-        , position_{position}
-        , offset_{offset} {
-    }
+    Office(Id id, Point pos, Offset offset) noexcept :
+        id_{id},
+        position_{pos},
+        offset_{offset} {}
 
     const Id& GetId() const noexcept {
         return id_;
@@ -113,20 +136,19 @@ private:
     Id id_;
     Point position_;
     Offset offset_;
+    std::vector<std::string> keys_;
 };
 
-
-class Map {
+class Map : public Element {
 public:
     using Id = util::Tagged<std::string, Map>;
     using Roads = std::vector<Road>;
     using Buildings = std::vector<Building>;
     using Offices = std::vector<Office>;
 
-    Map(Id id, std::string name) noexcept
-        : id_(std::move(id))
-        , name_(std::move(name)) {
-    }
+    Map(Id id, std::string name) noexcept :
+        id_(std::move(id)),
+        name_(std::move(name)) {}
 
     const Id& GetId() const noexcept {
         return id_;
@@ -160,9 +182,9 @@ public:
 
 private:
     using OfficeIdToIndex = std::unordered_map<Office::Id, size_t, util::TaggedHasher<Office::Id>>;
-
     Id id_;
     std::string name_;
+
     Roads roads_;
     Buildings buildings_;
 
@@ -172,98 +194,98 @@ private:
 
 class Dog {
 public:
-    using Id = util::Tagged<int, Dog>;
-    Dog(std::string user_name, Id id) noexcept
-        : user_name_{std::move(user_name)} 
-        , id_{std::move(id)} {
-    }
-    const Id& GetId() const noexcept {
-        return id_;
-    }
-    const std::string* GetUserName() const noexcept {
-        return &user_name_;
-    }
-private:
-    Id id_;
-    std::string user_name_;
-};
+    explicit Dog(Token pl_tok) :
+        dog_id_(++dog_id_counter_),
+        player_token_(pl_tok) {}
 
-class GameSession {
-public:
-    GameSession(const Map* map) noexcept
-        : map_(map) {
+    int GetId() const noexcept {
+        return dog_id_;
     }
-    void AddDog(const Dog* dog){
-        dogs_.push_back(dog);
+
+    const std::string& GetDogName() const noexcept {
+        return dog_name_;
     }
+
+    void SetDogName(std::string dog_name) {
+        dog_name_ = dog_name;
+    }
+
+    Token GetToken() const {
+        return player_token_;
+    }
+
+    void SetToken(Token pl_token) {
+        player_token_ = pl_token;
+    }
+
 private:
-    using Dogs = std::vector<const Dog*>;
-    Dogs dogs_;
-    const Map* map_;
+    int dog_id_;
+    std::string dog_name_;
+    Token player_token_;
+    static int dog_id_counter_;
 };
 
 class Player {
 public:
-    using Token = util::Tagged<std::string, Player>;
-    Player(Token token, const Dog* dog, GameSession* session) noexcept
-        : token_(std::move(token)) 
-        , dog_(dog) 
-        , session_(session) 
-    {}
-    const Token& GetToken() const noexcept{
-        return token_;
+    Player(const Token& token, const std::string& name, GameSession& session, Dog& dog) :
+        player_token_(token), 
+        player_name_(name),
+        session_(session),
+        dog_(dog),
+        player_id_(++player_id_counter_){}
+
+    Token GetPlayerToken() const {
+        return player_token_;
     }
-    const Dog& GetDog() const noexcept{
-        return *dog_;
+
+    int GetId() const noexcept {
+        return player_id_;
     }
+
+    const GameSession& GetPlayersSession() const noexcept {
+        return session_;
+    }
+
+    std::string GetName() const {
+        return std::string(player_name_);
+    }
+
 private:
-    Token token_;
-    const Dog* dog_;
-    GameSession* session_;
+    Token player_token_;
+    std::string player_name_;
+    GameSession& session_;
+    Dog& dog_;
+    int player_id_;
+    static int player_id_counter_;
 };
 
-class Players {
+class PlayerToken {
 public:
-    using ArrPlayers = std::vector<Player>;
-    Players() = default;
-    const Player* AddPlayer(GameSession* session, const Dog* dog){
-        Player::Token token = GetToken();
-        players_.emplace_back(Player(token, dog, session));
-        // players_.emplace(token, Player(token, dog, session));
-        // players_[token] = Player(token, dog, session);
-        auto player_ptr = &players_.back();
-        token_to_player_[token] = player_ptr;
-        return player_ptr;
+    Token GetToken() {
+        std::stringstream ss;
+        ss << std::setw(16) << std::setfill('0') << std::hex << generator1_(); 
+        ss << std::setw(16) << std::setfill('0') << std::hex << generator2_(); 
+        std::string result = ss.str();
+        assert(result.size() == 32);
+        return Token(ss.str());
     }
-    // No copy functions.
-    Players(const Players&) = delete;
-    void operator=(const Players&) = delete;
 
-
-    const Player* FindPlayer(const Player::Token& token) const noexcept {
-        if (auto it = token_to_player_.find(token); it != token_to_player_.end()) {
-            return it->second;
+    const Player* FindPlayer(const Token& token) const noexcept {
+        auto it = player_indexes_.find(token);
+        if (it != player_indexes_.end()) {
+            return &players_.at(it->second);
         }
         return nullptr;
     }
 
-    const ArrPlayers& GetPlayers(){
+    Player& AddPlayer(Player player);
+
+    const std::vector<Player>& GetPlayers() const noexcept {
         return players_;
     }
+
 private:
-    using TokenToPlayer = std::unordered_map<Player::Token, Player*, util::TaggedHasher<Player::Token>>;
-    ArrPlayers players_;
-    TokenToPlayer token_to_player_;
-
-    Player::Token GetToken(){
-        std::stringstream stream;
-        stream << std::hex << generator1_() << generator2_();
-        // stream << std::hex << 6654 << 6854654;
-        return Player::Token(stream.str());     
-    }
-
     std::random_device random_device_;
-    // std::random_device random_device2_;
     std::mt19937_64 generator1_{[this] {
         std::uniform_int_distribution<std::mt19937_64::result_type> dist;
         return dist(random_device_);
@@ -272,16 +294,42 @@ private:
         std::uniform_int_distribution<std::mt19937_64::result_type> dist;
         return dist(random_device_);
     }()};
+    // Чтобы сгенерировать токен, получите из generator1_ и generator2_
+    // два 64-разрядных числа и, переведя их в hex-строки, склейте в одну.
+    // Вы можете поэкспериментировать с алгоритмом генерирования токенов,
+    // чтобы сделать их подбор ещё более затруднительным
 
+    std::vector<Player> players_;
+    std::unordered_map<Token, size_t, TokenHasher> player_indexes_;
+};
+
+class GameSession {
+    GameSession(const GameSession&) = delete;
+    GameSession& operator=(const GameSession&) = delete;
+
+public:
+    explicit GameSession(const Map& map) :
+        map_(map) {}
+
+    void AddDog(Dog dog) {
+        dogs_.push_back(dog);
+    }
+
+    const std::vector<Dog>& GetDogs() const {
+        return dogs_;
+    }
+
+private:
+    const Map& map_;
+    std::vector<Dog> dogs_;
 };
 
 class Game {
 public:
     using Maps = std::vector<Map>;
-    Game(){};
 
     void AddMap(Map map);
-
+    
     const Maps& GetMaps() const noexcept {
         return maps_;
     }
@@ -292,54 +340,32 @@ public:
         }
         return nullptr;
     }
-    
-    const Player* AddPlayer(const std::string& user_name, const Map* map);
-// model::Player::Token Game::AddPlayer(const std::string& user_name, const Map* map){
-    const Player* FindPlayer(const std::string& token) const noexcept {
-        return players_.FindPlayer(model::Player::Token(std::string(token)));
-    }
-    
 
-    // No copy functions.
-    Game(const Game&) = delete;
-    void operator=(const Game&) = delete;
+    GameSession& GetGameSession(const Map::Id& id) {
+        if (game_sessions_.contains(id)) {
+            return game_sessions_.at(id);
+        }
 
-    const Players::ArrPlayers& GetPlayers(){
-        return players_.GetPlayers();
+        const Map* map = FindMap(id);
+        if (!map) {
+            throw std::invalid_argument("Map "s + *id + " doesn't exist"s);
+        }
+        auto pair = game_sessions_.emplace(id, *map);
+        if (!pair.second) {
+            throw std::logic_error("Failed to emplace map "s + *id);
+        }
+        return pair.first->second;
     }
 
 private:
     using MapIdHasher = util::TaggedHasher<Map::Id>;
     using MapIdToIndex = std::unordered_map<Map::Id, size_t, MapIdHasher>;
-    using MapToSessions = std::unordered_map<const Map*, std::vector<GameSession>>;
 
     std::vector<Map> maps_;
     MapIdToIndex map_id_to_index_;
 
-    std::vector<Dog> dogs_;
-    // std::vector<GameSession> sessions_;
-    MapToSessions sessions_;
-    Players players_;
-    GameSession* GetSession(const Map* map);
-
-
-
-    const Dog* AddDog(std::string user_name){
-        Dog::Id id(dogs_.size());
-        dogs_.emplace_back(user_name, id);
-        return &dogs_[*id];
-    }
-
-
-    const Dog& GetDog(Dog::Id id) const {
-        if(*id < dogs_.size()){
-            return dogs_[*id];
-        }
-    }
-
-
-
+    std::unordered_map<Map::Id, GameSession, util::TaggedHasher<Map::Id>> game_sessions_;
 
 };
 
-}  // namespace model
+} //namespace model

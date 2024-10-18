@@ -1,6 +1,33 @@
 #pragma once
 #include <compare>
 
+#include <string>
+
+namespace strconsts {
+
+    static const std::string x_start = "x0";
+    static const std::string x_end = "x1";
+    static const std::string y_start = "y0";
+    static const std::string y_end = "y1";
+    static const std::string x_offset = "offsetX";
+    static const std::string y_offset = "offsetY";
+    static const std::string x_str = "x";
+    static const std::string y_str = "y";
+    static const std::string h_str = "h";
+    static const std::string w_str = "w";
+}
+
+enum class RequestType {
+    API,
+    PLAYER,
+    FILE
+};
+
+struct RequestData {
+    RequestType type;
+    std::string r_target;
+};
+
 namespace util {
 
 /**
@@ -25,6 +52,7 @@ namespace util {
  * Person p1{name, address}; // OK
  * Person p2{address, name}; // Ошибка, Address и Name - разные типы
  */
+
 template <typename Value, typename Tag>
 class Tagged {
 public:
