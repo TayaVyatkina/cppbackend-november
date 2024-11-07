@@ -1,12 +1,14 @@
 FROM gcc:11.3 as build
 
+RUN sed -i 's/deb.debian.org/ftp.ru.debian.org/g' /etc/apt/sources.list
+
 # Выполнить установку зависимостей внутри контейнера.
 RUN apt update && \
     apt install -y \
       python3-pip \
       cmake \
     && \
-    pip3 install conan==1.*
+    pip3 install conan==1.64.1
 
 # копируем conanfile.txt в контейнер и запускаем conan install
 COPY conanfile.txt /app/
@@ -21,7 +23,7 @@ COPY CMakeLists.txt /app/
 
 RUN cd /app/build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    cmake --build .
+    cmake --build . --parallel 12
     
     
 # Второй контейнер в том же докерфайле

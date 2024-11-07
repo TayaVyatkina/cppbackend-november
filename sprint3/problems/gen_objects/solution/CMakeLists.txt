@@ -4,7 +4,7 @@ project(game_server CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+conan_basic_setup(TARGETS)
 
 find_package(Boost 1.78.0 REQUIRED)
 find_package(Boost 1.78.0 COMPONENTS log log_setup program_options)
@@ -76,6 +76,7 @@ add_executable(game_server
 	src/Logic/ticker.cpp
 
 )
+target_link_libraries(game_server PRIVATE CONAN_PKG::catch2) 
 target_link_libraries(game_server PRIVATE Threads::Threads Boost::log Boost::log_setup Boost::program_options)
 
 # Boost.Beast будет использовать std::string_view вместо boost::string_view
