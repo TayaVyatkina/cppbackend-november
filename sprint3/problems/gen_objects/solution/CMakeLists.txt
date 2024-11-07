@@ -4,23 +4,12 @@ project(game_server CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-
-get_property(importTargets DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
-message(STATUS "${importTargets}")
+conan_basic_setup()
 
 find_package(Boost 1.78.0 REQUIRED)
 find_package(Boost 1.78.0 COMPONENTS log log_setup program_options)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
-endif()
-
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-
-# Установите режим сборки по умолчанию в Debug
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -91,5 +80,3 @@ target_link_libraries(game_server PRIVATE Threads::Threads Boost::log Boost::log
 
 # Boost.Beast будет использовать std::string_view вместо boost::string_view
 add_compile_definitions(BOOST_BEAST_USE_STD_STRING_VIEW)
-target_include_directories(game_server PRIVATE CONAN_PKG::boost)
-target_link_libraries(game_server PRIVATE Threads::Threads CONAN_PKG::boost)
