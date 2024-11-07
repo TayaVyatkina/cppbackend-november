@@ -76,6 +76,15 @@ add_executable(game_server
 	src/Logic/ticker.cpp
 
 )
+
+target_include_directories(game_server PRIVATE
+	src
+	src/Application
+	src/Logic
+	src/Model
+	src/Server
+
+)
 target_link_libraries(game_server PRIVATE CONAN_PKG::catch2) 
 target_link_libraries(game_server PRIVATE Threads::Threads Boost::log Boost::log_setup Boost::program_options)
 
