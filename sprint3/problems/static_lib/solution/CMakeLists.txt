@@ -16,7 +16,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 
-
 add_library(UserStaticLib STATIC
 	src/ModelLayer/model/constdef.h
 	src/ModelLayer/model/dog.h
@@ -110,7 +109,9 @@ include(${CONAN_BUILD_DIRS_CATCH2}/Catch.cmake)
 add_executable(game_server_tests
 	tests/loot_generator_tests.cpp
 )
-
+target_include_directories(game_server_tests PRIVATE
+	src/ModelLayer/model
+)
 target_link_libraries(game_server_tests PRIVATE CONAN_PKG::catch2 UserStaticLib)
 catch_discover_tests(game_server_tests)
 
