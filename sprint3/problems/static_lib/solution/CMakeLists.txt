@@ -33,19 +33,19 @@ add_library(UserStaticLib STATIC
 	src/Model/loot_generator.cpp
 	src/Model/lost_obj.h
 	src/Model/lost_obj.cpp
-	src/Logic/sdk.h
-	src/Logic/tagged.h
-	src/Logic/utils.h
-	src/Logic/utils.cpp
-	src/Logic/tag_invoke_handler.cpp
-	src/Logic/tag_invoke_handler.h
+	src/Logic/other/sdk.h
+	src/Logic/other/tagged.h
+	src/Logic/other/utils.h
+	src/Logic/other/utils.cpp
+	src/Logic/json/tag_invoke_handler.cpp
+	src/Logic/json/tag_invoke_handler.h
 )
 
 target_include_directories(UserStaticLib PUBLIC 
 	${ZLIB_INCLUDES}
 	src/Model
-	src/Logic
-	src/Application
+	src/Logic/other
+	src/Logic/json
 )
 
 
@@ -65,11 +65,11 @@ add_executable(game_server
 	src/Logic/error_handler.cpp
 	src/Logic/file_system.cpp
     src/Logic/file_system.h
-	src/Logic/json_loader.h
-	src/Logic/json_loader.cpp
-	src/Logic/json_handler.h
-	src/Logic/json_handler.cpp
-	src/Logic/boost_json.cpp
+	src/Logic/json/json_loader.h
+	src/Logic/json/json_loader.cpp
+	src/Logic/json/json_handler.h
+	src/Logic/json/json_handler.cpp
+	src/Logic/json/boost_json.cpp
 	#src/Logic/tag_invoke_handler.cpp
 	#src/Logic/tag_invoke_handler.h
 	src/Logic/logger.h
@@ -115,6 +115,8 @@ target_include_directories(game_server PRIVATE
 	src
 	src/Application
 	src/Logic
+	src/Logic/other
+	src/Logic/json
 	#src/Model
 	src/Server
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "map.h"
-#include "game_session.h"
-#include "player.h"
+//#include "game_session.h"
+//#include "player.h"
 
 #include <memory>
 
