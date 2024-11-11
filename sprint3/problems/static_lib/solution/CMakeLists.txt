@@ -70,33 +70,33 @@ add_executable(game_server
 	src/Logic/json_handler.h
 	src/Logic/json_handler.cpp
 	src/Logic/boost_json.cpp
-	src/Logic/tag_invoke_handler.cpp
-	src/Logic/tag_invoke_handler.h
-	src/Logic//logger.h
+	#src/Logic/tag_invoke_handler.cpp
+	#src/Logic/tag_invoke_handler.h
+	src/Logic/logger.h
 	src/Logic/logger.cpp
 	src/Logic/logging_handler.cpp
 	src/Logic/logging_handler.h
-	src/Model/constdef.h
-	src/Model/dog.h
-	src/Model/dog.cpp
-	src/Model/game.h
-	src/Model/game.cpp
-	src/Model/map.cpp
-	src/Model/map.h
-	src/Model/road.h
-	src/Model/road.cpp
-	src/Model/road_layout.h
-	src/Model/road_layout.cpp
-	src/Model/typedef.h
-	src/Model/typedef.cpp
-	src/Model/loot_generator.h
-	src/Model/loot_generator.cpp
-	src/Model/lost_obj.h
-	src/Model/lost_obj.cpp
-	src/Logic/sdk.h
-	src/Logic/tagged.h
-	src/Logic/utils.h
-	src/Logic/utils.cpp
+	#src/Model/constdef.h
+	#src/Model/dog.h
+	#src/Model/dog.cpp
+	#src/Model/game.h
+	#src/Model/game.cpp
+	#src/Model/map.cpp
+	#src/Model/map.h
+	#src/Model/road.h
+	#src/Model/road.cpp
+	#src/Model/road_layout.h
+	#src/Model/road_layout.cpp
+	#src/Model/typedef.h
+	#src/Model/typedef.cpp
+	#src/Model/loot_generator.h
+	#src/Model/loot_generator.cpp
+	#src/Model/lost_obj.h
+	#src/Model/lost_obj.cpp
+	#src/Logic/sdk.h
+	#src/Logic/tagged.h
+	#src/Logic/utils.h
+	#src/Logic/utils.cpp
 	src/Server/api_request_handler.h
 	src/Server/api_request_handler_proxy.h
 	src/Server/static_file_request_handler.h
