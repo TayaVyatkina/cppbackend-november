@@ -29,20 +29,20 @@ namespace app {
                     bool randomize_spawn_points);                           
 
         const Id& GetId() const;                                            
-        const std::string& GetName() const;                               
-        const GameSession::Id& GetSessionId() const;                      
+        const std::string& GetName() const;                                 
+        const GameSession::Id& GetSessionId() const;                        
         std::shared_ptr<GameSession> GetSession();                          
         std::shared_ptr<model::Dog> GetDog();                              
 
-        void MoveDog(const std::chrono::milliseconds& diff_time);        
+        void MoveDog(const std::chrono::milliseconds& diff_time);       
 
         
 
     private:
-        void PutDogInRndPosition(const model::Map& map);                   
+        void PutDogInRndPosition(const model::Map& map);                  
         void PutDogInStartPosition(const model::Map& map);                  
 
-        Id id_;                                                             
+        Id id_;                                                          
         std::string name_;                                                
         std::shared_ptr<GameSession> session_;                            
         std::shared_ptr<model::Dog> dog_;                              

@@ -28,7 +28,7 @@ namespace app {
         using DogsId = std::unordered_map<model::Dog::Id, std::shared_ptr<model::Dog>, DogsIdHasher>;
         using lostObjIdHasher = util::TaggedHasher<model::LostObject::Id>;
         using lostObjectsId = std::unordered_map<model::LostObject::Id, std::shared_ptr<model::LostObject>, lostObjIdHasher>;
-        using TimeInterval = std::chrono::milliseconds;
+        using TimeInterval = std::chrono::milliseconds; 
 
         GameSession(std::shared_ptr<model::Map> map, const model::LootGenCfg cfg, net::io_context& ioc) :
             map_(map),
@@ -40,7 +40,7 @@ namespace app {
             lootTicker_ = std::make_shared<tickerTime::Ticker>(
                 strand_,
                 lootGenerator_.GetBaseInterval(),
-                std::bind(&GameSession::GenerateLoot, this, std::placeholders::_1) //https://en.cppreference.com/w/cpp/utility/functional/bind
+                std::bind(&GameSession::GenerateLoot, this, std::placeholders::_1) 
                 );
             lootTicker_->Start();
       
@@ -54,17 +54,17 @@ namespace app {
         const lostObjectsId& GetLostObj();
 
     private:
-        std::shared_ptr<model::Map> map_;                                       
-        std::shared_ptr<SessionStrand> strand_;                                 
-        Id id_;                                                                 
-        loot_gen::LootGenerator lootGenerator_;                                
+        std::shared_ptr<model::Map> map_;                
+        std::shared_ptr<SessionStrand> strand_;                              
+        Id id_;                                                          
+        loot_gen::LootGenerator lootGenerator_;                             
         DogsId dogs_;                                                          
-        lostObjectsId lostObjects_;                                           
-        std::shared_ptr<tickerTime::Ticker> lootTicker_;                       
+        lostObjectsId lostObjects_;                                       
+        std::shared_ptr<tickerTime::Ticker> lootTicker_;                    
 
-        void GenerateLoot(const TimeInterval& interval);                       
+        void GenerateLoot(const TimeInterval& interval);                     
         void GenerateLostObject();                                              
-        void PutLootInRndPosition(std::shared_ptr<model::LostObject> loot);     
+        void PutLootInRndPosition(std::shared_ptr<model::LostObject> loot);    
     };
 
 }

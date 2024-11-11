@@ -10,14 +10,14 @@
 
 namespace auth {
 
-    struct TokenTag {};    
+    struct TokenTag {};             
 
     using Token = util::Tagged<std::string, TokenTag>;
     using TokenHasher = util::TaggedHasher<Token>;
 
     class PlayerTokens {
     public:
-        /*Все конструкторы дефолтные*/
+
         PlayerTokens() = default;
         PlayerTokens(const PlayerTokens& other) = default;
         PlayerTokens(PlayerTokens&& other) = default;
@@ -25,13 +25,13 @@ namespace auth {
         PlayerTokens& operator = (PlayerTokens&& other) = default;
         virtual ~PlayerTokens() = default;
 
-        Token AddPlayer(std::weak_ptr<app::Player> player);                                    
-        std::weak_ptr<app::Player> FindPlayerByToken(Token token);                           
+        Token AddPlayer(std::weak_ptr<app::Player> player);                                      
+        std::weak_ptr<app::Player> FindPlayerByToken(Token token);                               
 
     private:
-        std::unordered_map< Token, std::weak_ptr<app::Player>, TokenHasher > tokenToPlayer_;    
+        std::unordered_map< Token, std::weak_ptr<app::Player>, TokenHasher > tokenToPlayer_; 
         
-        /*Тут всё для рандомайзера*/
+      
         std::random_device random_device_;
         std::mt19937_64 generator1_{ [this] {
             std::uniform_int_distribution<std::mt19937_64::result_type> dist;
@@ -44,4 +44,4 @@ namespace auth {
 
     };
 
-}  // namespace auth
+} 

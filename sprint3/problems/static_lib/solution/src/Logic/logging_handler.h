@@ -6,8 +6,6 @@
 #include <boost/json.hpp>
 #include <boost/date_time.hpp>
 
-
-
 namespace logger {
 
     namespace beast = boost::beast;
@@ -16,7 +14,6 @@ namespace logger {
     using HttpRequest = http::request<http::string_body>;
     using namespace std::literals;
 
-    //константы полей для логгирования
     const std::string IP = "ip";
     const std::string URL = "URI";
     const std::string METHOD = "method";
@@ -31,7 +28,7 @@ namespace logger {
     const std::string DATA = "data";
     const std::string MESSAGE = "message";
 
-    struct RequestLog {                                            
+    struct RequestLog {                                           
         RequestLog(std::string ip_addr, const HttpRequest& req) :
             ip(ip_addr),
             url(req.target()),
@@ -46,7 +43,7 @@ namespace logger {
     void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, const RequestLog& request);
 
     template <typename Body, typename Fields>
-    struct ResponseLog {                                        
+    struct ResponseLog {                                         
         ResponseLog(std::string ip_addr, long res_time, const http::response<Body, Fields>& res) :
             ip(ip_addr),
             response_time(res_time),
@@ -68,7 +65,7 @@ namespace logger {
                 {CONTENT_TYPE, json::value_from(response.content_type)} };
     };
 
-    struct ServerAddrPortLog {                                   //Адрес порт
+    struct ServerAddrPortLog {                                 
         ServerAddrPortLog(std::string addr, uint32_t prt) :
             address(addr), port(prt) {};
 
@@ -79,7 +76,7 @@ namespace logger {
 
     void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, const ServerAddrPortLog& server_address);
 
-    struct ExceptionLog {                                           //Исключения
+    struct ExceptionLog {                                        
         ExceptionLog(int code, std::string_view text, std::string_view where) :
             code(code), text(text), where(where) {};
 
@@ -88,14 +85,14 @@ namespace logger {
         std::string_view where;
     };
 
- 
+
     void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, const ExceptionLog& exception);
 
-    struct ExitCodeLog { 
+    struct ExitCodeLog {     
         int code;
     };
 
- 
+
     void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, ExitCodeLog const& exit_code);
 
     template <class T>

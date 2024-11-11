@@ -17,20 +17,20 @@ namespace model {
 			type_(0)
 		{};
 
-
+		/*Геттеры*/
 		const Id& GetId() const;
 		size_t GetType() const;
 		const Position& GetPosition() const;
 
-
+		/*Сеттеры*/
 		void SetType(size_t type);
 		void SetPosition(Position position);
 
 	private:
-		inline static size_t start_id_ = 0;	
-		Id id_;									
-		size_t type_;							
-		Position position_;						
+		inline static size_t start_id_ = 0;		//С этого номера будут увеличиваться айдишники
+		Id id_;									//Ид объекта
+		size_t type_;							//Тип
+		Position position_;						//Позиция
 	};
 
 

@@ -12,6 +12,9 @@
 #include <utility>
 #include <cstddef>
 
+
+
+//Тут тоже всё переделываем на tag_invoke
 namespace model {
 
     const double DOG_SPEED_INIT = 1.0;

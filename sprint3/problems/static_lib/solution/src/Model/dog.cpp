@@ -67,7 +67,7 @@ namespace model {
     Position Dog::CalculateNewPosition(const std::chrono::milliseconds& diff_time) {
         Position pos = GetPosition();
         const Speed& speed = GetSpeed();
-        pos.x += speed.vx * diff_time.count() / CONVERT_MS_TO_S;         
+        pos.x += speed.vx * diff_time.count() / CONVERT_MS_TO_S;  
         pos.y += speed.vy * diff_time.count() / CONVERT_MS_TO_S;
         return pos;
     };

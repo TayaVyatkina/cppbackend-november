@@ -13,7 +13,7 @@ namespace requestHandler {
         using HandlerType = void(*)(const Request&, const std::filesystem::path&, Send&&);
 
     public:
-    
+        /*Всё копирование запрещено*/
         StaticFileRequestHandlerProxy(const StaticFileRequestHandlerProxy&) = delete;
         StaticFileRequestHandlerProxy& operator=(const StaticFileRequestHandlerProxy&) = delete;
         StaticFileRequestHandlerProxy(StaticFileRequestHandlerProxy&&) = delete;

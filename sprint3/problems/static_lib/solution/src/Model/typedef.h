@@ -44,7 +44,8 @@ namespace model {
     struct LootGenCfg {
         double period, probability;
     };
- 
+    //https://stackoverflow.com/questions/49730260/jsonconvert-how-to-ignore-integer-types-where-the-value-is-a-specific-number
+    //Иначе будет слать 0 в ротейшн, когда поле не определено конфигом
     struct LootType {
         std::string name{ "" };
         std::string file{ "" };

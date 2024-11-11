@@ -30,27 +30,27 @@ namespace model {
         Dog& operator = (Dog&& other) = default;
         virtual ~Dog() = default;
 
-        const Id& GetId() const;                  
+        const Id& GetId() const;                 
         const std::string& GetName() const;        
 
-        const Direction GetDirection() const;       
-        void SetDirection(Direction direction);     
+        const Direction GetDirection() const;      
+        void SetDirection(Direction direction);   
         
-        const Position& GetPosition() const;       
-        void SetPosition(Position position);    
+        const Position& GetPosition() const;     
+        void SetPosition(Position position);     
         
         const Speed& GetSpeed() const;          
         void SetSpeed(Speed velocity);           
         
-        void Move(Direction direction, double speed);
-        Position CalculateNewPosition(const std::chrono::milliseconds& diff_time);     
+        void Move(Direction direction, double speed); 
+        Position CalculateNewPosition(const std::chrono::milliseconds& diff_time);   
 
     private:
-        Id id_;                                    
+        Id id_;                                
         std::string name_;                          
         Direction direction_{ Direction::NORTH };   
-        Position position_{ 0.0, 0.0 };            
-        Speed speed_{ 0.0, 0.0 };                  
+        Position position_{ 0.0, 0.0 };             
+        Speed speed_{ 0.0, 0.0 };                 
     };
 
 }

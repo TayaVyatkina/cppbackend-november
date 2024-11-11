@@ -4,12 +4,10 @@
 namespace tickerTime {
 
     using namespace std::literals;
-
     void Ticker::Start() {
         last_tick_ = std::chrono::steady_clock::now();
         ScheduleTick(); 
     }
-
 
     void Ticker::ScheduleTick() {
         
