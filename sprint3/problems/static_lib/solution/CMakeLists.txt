@@ -14,93 +14,90 @@ endif()
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-
-
 add_library(UserStaticLib STATIC
-	src/ModelLayer/model/constdef.h
-	src/ModelLayer/model/dog.h
-	src/ModelLayer/model/dog.cpp
-	src/ModelLayer/model/game.h
-	src/ModelLayer/model/game.cpp
-	src/ModelLayer/model/map.cpp
-	src/ModelLayer/model/map.h
-	src/ModelLayer/model/road.h
-	src/ModelLayer/model/road.cpp
-	src/ModelLayer/model/road_layout.h
-	src/ModelLayer/model/road_layout.cpp
-	src/ModelLayer/model/typedef.h
-	src/ModelLayer/model/typedef.cpp
-	src/ModelLayer/model/loot_generator.h
-	src/ModelLayer/model/loot_generator.cpp
-	src/ModelLayer/model/lost_obj.h
-	src/ModelLayer/model/lost_obj.cpp
-	src/InterLayer/other/sdk.h
-	src/InterLayer/other/tagged.h
-	src/InterLayer/other/utils.h
-	src/InterLayer/other/utils.cpp
-	src/InterLayer/json/tag_invoke_handler.cpp
-	src/InterLayer/json/tag_invoke_handler.h
+	src/Model/constdef.h
+	src/Model/dog.h
+	src/Model/dog.cpp
+	src/Model/game.h
+	src/Model/game.cpp
+	src/Model/map.cpp
+	src/Model/map.h
+	src/Model/road.h
+	src/Model/road.cpp
+	src/Model/road_layout.h
+	src/Model/road_layout.cpp
+	src/Model/typedef.h
+	src/Model/typedef.cpp
+	src/Model/loot_generator.h
+	src/Model/loot_generator.cpp
+	src/Model/lost_obj.h
+	src/Model/lost_obj.cpp
+	src/Logic/sdk.h
+	src/Logic/tagged.h
+	src/Logic/utils.h
+	src/Logic/utils.cpp
+	src/Logic/tag_invoke_handler.cpp
+	src/Logic/tag_invoke_handler.h
 )
 
 target_include_directories(UserStaticLib PUBLIC 
 	${ZLIB_INCLUDES}
-	src/ModelLayer/model
-	src/InterLayer/other
-	src/InterLayer/json
+	src/Model
+	src/Logic
 )
 	
 add_executable(game_server
 	src/main.cpp
-	src/ApplicationLayer/application/application.h
-	src/ApplicationLayer/application/application.cpp
-	src/ApplicationLayer/application/game_session.h
-	src/ApplicationLayer/application/game_session.cpp
-	src/ApplicationLayer/application/player.h
-	src/ApplicationLayer/application/player.cpp
-	src/ApplicationLayer/auth/tokens.h
-	src/ApplicationLayer/auth/tokens.cpp
-	src/InterLayer/command/command.h
-	src/InterLayer/command/command.cpp
-	src/InterLayer/error/error_handler.h
-	src/InterLayer/error/error_handler.cpp
-	src/InterLayer/file_system/file_system.cpp
-	src/InterLayer/file_system/file_system.h
-	src/InterLayer/json/json_loader.h
-	src/InterLayer/json/json_loader.cpp
-	src/InterLayer/json/json_handler.h
-	src/InterLayer/json/json_handler.cpp
-	src/InterLayer/json/boost_json.cpp
-	src/InterLayer/logger/logger.h
-	src/InterLayer/logger/logger.cpp
-	src/InterLayer/logger/logging_handler.cpp
-	src/InterLayer/logger/logging_handler.h
-	src/ServerLayer/request/api_request_handler.h
-	src/ServerLayer/request/api_request_handler_proxy.h
-	src/ServerLayer/request/static_file_request_handler.h
-	src/ServerLayer/request/static_file_request_handler_proxy.h
-	src/ServerLayer/request/request_handler.h
-	src/ServerLayer/request/request_handler_unit.h
-	src/ServerLayer/request/request_handler.cpp
-	src/ServerLayer/server/http_server.cpp
-	src/ServerLayer/server/http_server.h
-	src/InterLayer/ticker/ticker.h
-	src/InterLayer/ticker/ticker.cpp
+	src/Application/application.h
+	src/Application/application.cpp
+	src/Application/game_session.h
+	src/Application/game_session.cpp
+	src/Application/player.h
+	src/Application/player.cpp
+	src/Application/tokens.h
+	src/Application/tokens.cpp
+	src/Logic/command.h
+	src/Logic/command.cpp
+	src/Logic/error_handler.h
+	src/Logic/error_handler.cpp
+	src/Logic/file_system.cpp
+    src/Logic/file_system.h
+	src/Logic/json_loader.h
+	src/Logic/json_loader.cpp
+	src/Logic/json_handler.h
+	src/Logic/json_handler.cpp
+	src/Logic/boost_json.cpp
+	src/Logic/tag_invoke_handler.cpp
+	src/Logic/tag_invoke_handler.h
+	src/Logic/logger.h
+	src/Logic/logger.cpp
+	src/Logic/logging_handler.cpp
+	src/Logic/logging_handler.h
+	
+
+	src/Server/api_request_handler.h
+	src/Server/api_request_handler_proxy.h
+	src/Server/static_file_request_handler.h
+	src/Server/static_file_request_handler_proxy.h
+	src/Server/request_handler.h
+	src/Server/request_handler_unit.h
+	src/Server/request_handler.cpp
+	src/Server/http_server.cpp
+	src/Server/http_server.h
+	src/Logic/ticker.h
+	src/Logic/ticker.cpp
+
 )
 
 target_include_directories(game_server PRIVATE
 	src
-	src/ApplicationLayer/application
-	src/ApplicationLayer/auth
-	src/InterLayer/command
-	src/InterLayer/error
-	src/InterLayer/file_system
-	src/InterLayer/json
-	src/InterLayer/logger
-	src/InterLayer/ticker
-	src/ServerLayer/request
-	src/ServerLayer/server
+	src/Application
+	src/Logic
+	#src/Model
+	src/Server
 
 )
+
 target_link_libraries(game_server PRIVATE Threads::Threads Boost::log Boost::log_setup Boost::program_options UserStaticLib)
 
 include(CTest)

@@ -51,13 +51,13 @@ int main(int argc, const char* argv[]) {
 #ifndef DEBUG
         model::Game game = json_loader::LoadGame(args.value().config_file);
 #else
-        model::Game game = json_loader::LoadGame("data/config.json");                    
+        model::Game game = json_loader::LoadGame("data/config.json");                       //для дебага
 #endif
         // 2. Устанавливаем путь до статического контента.
 #ifndef DEBUG
         std::filesystem::path staticContentPath{ args.value().www_root };
 #else
-        std::filesystem::path staticContentPath{"static"};                                
+        std::filesystem::path staticContentPath{"static"};                                //для дебага
 #endif
         // 3. Инициализируем io_context
         const unsigned num_threads = std::thread::hardware_concurrency();
