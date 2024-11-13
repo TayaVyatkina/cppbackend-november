@@ -50,3 +50,4 @@ private:
 };
 
 }  // namespace loot_gen
+
