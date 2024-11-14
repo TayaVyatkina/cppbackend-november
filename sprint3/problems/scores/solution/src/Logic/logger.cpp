@@ -4,7 +4,7 @@ namespace logger {
 
     void StringFormatter(logging::record_view const& rec, logging::formatting_ostream& strm) {
         
-        strm << rec[expr::smessage];            //Выводим месседж
+        strm << rec[expr::smessage];
     }
 
     void InitLogger() {

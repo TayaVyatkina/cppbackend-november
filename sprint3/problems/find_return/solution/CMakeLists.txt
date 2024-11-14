@@ -15,6 +15,7 @@ endif()
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+
 add_library(UserStaticLib STATIC
 	src/Model/geom.h
 	src/Model/collision_detector.cpp
@@ -51,6 +52,11 @@ target_include_directories(UserStaticLib PUBLIC
 	src/Model
 	src/Logic
 )
+
+
+
+
+
 
 add_executable(game_server
 	src/main.cpp

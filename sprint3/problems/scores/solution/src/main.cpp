@@ -54,7 +54,7 @@ int main(int argc, const char* argv[]) {
 #ifndef DEBUG
         model::Game game = json_loader::LoadGame(args.value().config_file);
 #else
-        model::Game game = json_loader::LoadGame("data/config.json");                       //для дебага
+        model::Game game = json_loader::LoadGame("data/config.json");                       
 #endif
         // 2. Устанавливаем путь до статического контента.
 #ifndef DEBUG

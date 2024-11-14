@@ -4,13 +4,11 @@
 namespace tickerTime {
 
     using namespace std::literals;
-    /*Внутри strand будет работать*/
     void Ticker::Start() {
         last_tick_ = std::chrono::steady_clock::now();
         ScheduleTick(); 
     }
 
-    /*тИкать через период*/
     void Ticker::ScheduleTick() {
         
         timer_.expires_after(period_);

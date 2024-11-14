@@ -14,7 +14,7 @@ namespace programm_option {
         bool randomize_spawn_points{ false };
     };
 
-    [[nodiscard]] std::optional<Args> ParseCommandLine(int argc, const char* const argv[]);        //Парсинг командной строки
+    [[nodiscard]] std::optional<Args> ParseCommandLine(int argc, const char* const argv[]);       
 
     class ConfigFileNotSpecifiedException : public std::exception {
     public:
