@@ -27,7 +27,7 @@ namespace requestHandler {
         RHUnit& operator = (RHUnit&& other) = default;
         virtual ~RHUnit() = default;
 
-        Handler& GetHandler(http::verb method) {            //Геттер на хэндлер, если метода нет, то выдаст хэндл ошибок
+        Handler& GetHandler(http::verb method) {
             if (handlers_.contains(method)) {
                 return handlers_[method];
             }

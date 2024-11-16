@@ -15,7 +15,6 @@
 
 
 
-//Тут тоже всё переделываем на tag_invoke
 namespace model {
 
     namespace json = boost::json;
@@ -183,4 +182,4 @@ namespace model {
     void tag_invoke(json::value_from_tag, json::value& jv, const Map& map);
     Map tag_invoke(json::value_to_tag<Map>, const json::value& jv);
 
-}  // namespace model
+}

@@ -8,22 +8,19 @@
 
 namespace model {
 
-	const int CELL_FACTOR = 20;								// Коэффициент на разбитие карты на секторы
-	const double ACCURACY = 0.001;							// Точность, для плавающей точки
-	const double OFFSET = 0.4;								// Смещение от центра дороги или ширина полосы
+	const int CELL_FACTOR = 20;
+	const double ACCURACY = 0.001;
+	const double OFFSET = 0.4;
 
-	/*Конструктор копирования*/
 	RoadLayout::RoadLayout(const RoadLayout& other) {
 		CopyAll(other.roads_);
 	};
 
-	/*Коструктор перемещения*/
 	RoadLayout::RoadLayout(RoadLayout&& other) noexcept{
 		matrixMap_ = std::move(other.matrixMap_);
 		roads_ = std::move(other.roads_);
 	};
 
-	/*Оператор присваивания*/
 	RoadLayout& RoadLayout::operator = (const RoadLayout& other) {
 		if (this != &other) {
 			CopyAll(other.roads_);
@@ -31,7 +28,6 @@ namespace model {
 		return *this;
 	};
 
-	/*Оператор для RValue*/
 	RoadLayout& RoadLayout::operator = (RoadLayout&& other) {
 		if (this != &other) {
 			matrixMap_ = std::move(other.matrixMap_);

@@ -9,8 +9,6 @@ namespace requestHandler {
     const size_t BEARER_INDEX = 0;
     const size_t TOKEN_INDEX = 1;
 
-    /*С бустовским split почему-то валятся тесты,
-    хотя при дебаге всё работает как надо. Оставил пока как есть.*/
     std::vector<std::string_view> SplitStr(std::string_view str) {
         std::vector<std::string_view> result;
         std::string delim = "/";
@@ -28,8 +26,6 @@ namespace requestHandler {
         return result;
     };
 
-    //https://ru.hexlet.io/qna/glossary/questions/bearer-token-chto-eto
-    //Будем использовать bearer токен
     std::string GetBearerToken(std::string_view bearer_string) {
         std::string token;
         std::vector<std::string_view> splitted;
@@ -53,7 +49,7 @@ namespace requestHandler {
         return std::string(splitted[TOKEN_INDEX]);
     };
 
-}//namespace requestHandler 
+}
 
 namespace randomgen {
 
@@ -77,4 +73,4 @@ namespace randomgen {
         std::uniform_int_distribution<size_t> distr(lower, upper);
         return distr(eng);
     };
-}//namespace randomgen
+}

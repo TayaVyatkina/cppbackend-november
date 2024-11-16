@@ -26,9 +26,8 @@ namespace app {
             ioc_(ioc),
             strand_(std::make_shared<StrandApp>(net::make_strand(ioc))) {
      
-        };     //конструктор. 
+        };
 
-        /*Запретить все копирования, присваивания и мувы*/
         Application(const Application& other) = delete;
         Application(Application&& other) = delete;
         Application& operator = (const Application& other) = delete;
@@ -36,18 +35,18 @@ namespace app {
 
         virtual ~Application() = default;
 
-        const model::Game::Maps& ListMap() const noexcept;                                                  //Выдать список карт
-        const std::shared_ptr<model::Map> FindMap(const model::Map::Id& id) const noexcept;                 //Найти карту
-        std::tuple<auth::Token, Player::Id> JoinGame(const std::string& name, const model::Map::Id& id);    //Залогинить игорька
-        const std::vector< std::weak_ptr<Player> >& GetPlayersFromSession(auth::Token token);               //Посмотреть сколько играют
-        bool CheckPlayerByToken(auth::Token token);                                                         //Чекнуть, если такой в игре
-        void MovePlayer(const auth::Token& token, model::Direction direction);                              //Передвижение игрока
-        std::shared_ptr<StrandApp> GetStrand();                                                             //Геттер, на всякий случай...
-        bool CheckTimeManage() const;                                                                       //Как управляем временем, вручную или нет
-        void UpdateGameState(const std::chrono::milliseconds& time);                                        //апдейтим состояние игры
-        void AddGameSession(std::shared_ptr<GameSession> session);                                          //Добавить сессию
-        std::shared_ptr<GameSession> GetGameSessionByMapId(const model::Map::Id& id) const noexcept;              //Геттер сессии по айди
-        std::shared_ptr<GameSession> GetGameSessionByToken(const auth::Token& token) const noexcept;           //Геттер сессии по токену
+        const model::Game::Maps& ListMap() const noexcept;
+        const std::shared_ptr<model::Map> FindMap(const model::Map::Id& id) const noexcept;
+        std::tuple<auth::Token, Player::Id> JoinGame(const std::string& name, const model::Map::Id& id);
+        const std::vector< std::weak_ptr<Player> >& GetPlayersFromSession(auth::Token token);
+        bool CheckPlayerByToken(auth::Token token);
+        void MovePlayer(const auth::Token& token, model::Direction direction);
+        std::shared_ptr<StrandApp> GetStrand();
+        bool CheckTimeManage() const;
+        void UpdateGameState(const std::chrono::milliseconds& time);
+        void AddGameSession(std::shared_ptr<GameSession> session);
+        std::shared_ptr<GameSession> GetGameSessionByMapId(const model::Map::Id& id) const noexcept;
+        std::shared_ptr<GameSession> GetGameSessionByToken(const auth::Token& token) const noexcept;
     private:
         using SessionIdHasher = util::TaggedHasher<GameSession::Id>;
         using SessionIdToIndex = std::unordered_map<GameSession::Id, std::vector< std::weak_ptr<Player> >, SessionIdHasher>;
@@ -57,22 +56,22 @@ namespace app {
 
         using TokenToSessionIndex = std::unordered_map<auth::Token, std::shared_ptr<GameSession>, auth::TokenHasher>;
 
-        model::Game game_;                                                                                  //Объект игры
-        std::chrono::milliseconds tickPeriod_;                                                              //Период обновления
-        bool randomizePosition_;                                                                            //Флаг того ставитьли собак рандомно или в {0 0} 
-        std::vector< std::shared_ptr<Player> > players_;                                                    //Вектор игорьков
-        SessionIdToIndex sessionID_;                                                                        //ID сессии
+        model::Game game_;
+        std::chrono::milliseconds tickPeriod_;
+        bool randomizePosition_;
+        std::vector< std::shared_ptr<Player> > players_;
+        SessionIdToIndex sessionID_;
         auth::PlayerTokens playerTokens_;
         net::io_context& ioc_;
-        std::shared_ptr<StrandApp> strand_;                                                                 //На всякий случай...
-        std::shared_ptr<tickerTime::Ticker> ticker_;                                                        //Тикер
-        std::vector< std::shared_ptr<GameSession> > sessions_;                                              //из гейм сессии перенос, после рефактора
-        MapIdToSessionIndex mapIdToSessionIndex_;                                                           //из гейм сессии перенос, после рефактора
-        TokenToSessionIndex tokenToSessionIndex_;                                                           //мапа для соотношения токенов с сессией
+        std::shared_ptr<StrandApp> strand_;
+        std::shared_ptr<tickerTime::Ticker> ticker_;
+        std::vector< std::shared_ptr<GameSession> > sessions_;
+        MapIdToSessionIndex mapIdToSessionIndex_;
+        TokenToSessionIndex tokenToSessionIndex_;
 
 
-        std::shared_ptr<Player> CreatePlayer(const std::string& player_name);                               //Создать игорька
-        void BindPlayerInSession(std::shared_ptr<Player> player,                                            //Забиндить игорька в сессию
+        std::shared_ptr<Player> CreatePlayer(const std::string& player_name);
+        void BindPlayerInSession(std::shared_ptr<Player> player,
             std::shared_ptr<GameSession> session);
     };
 

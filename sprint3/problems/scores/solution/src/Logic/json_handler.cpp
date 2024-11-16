@@ -3,9 +3,8 @@
 #include <map>
 #include <sstream>
 #include <boost/json/array.hpp>
-#include <boost/json.hpp>                                                                   //Возврат на буст. Он читабельнее, хоть и менее понятен
+#include <boost/json.hpp>
 
-/*Всё что ниже переделано на буст с jsoncpp*/
 namespace jsonOperation {
 
     std::string GameToJson(const model::Game::Maps& game) {

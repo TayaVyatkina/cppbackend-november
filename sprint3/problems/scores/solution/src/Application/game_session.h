@@ -29,7 +29,7 @@ namespace app {
         using DogsId = std::unordered_map<model::Dog::Id, std::shared_ptr<model::Dog>, DogsIdHasher>;
         using lostObjIdHasher = util::TaggedHasher<model::LostObject::Id>;
         using lostObjectsId = std::unordered_map<model::LostObject::Id, std::shared_ptr<model::LostObject>, lostObjIdHasher>;
-        using TimeInterval = std::chrono::milliseconds;  //Из лут генератора
+        using TimeInterval = std::chrono::milliseconds;
 
         GameSession(std::shared_ptr<model::Map> map, const TimeInterval& gameRefreshPeriod, const model::LootGenCfg cfg, net::io_context& ioc) :
             map_(map),
@@ -41,34 +41,33 @@ namespace app {
 
         };
 
-        /*Геттеры на айди, мар ,стренд и собак*/
         const Id& GetId() const noexcept;
         const std::shared_ptr<model::Map> GetMap();
         std::shared_ptr<SessionStrand> GetStrand();
         DogsId& GetDogs();
         const lostObjectsId& GetLostObj();
         void UpdateGameState(const TimeInterval& period);
-        void StartGame();                                                       //Запуск игры
+        void StartGame();
 
     private:
-        std::shared_ptr<model::Map> map_;                                       //мапа
-        std::shared_ptr<SessionStrand> strand_;                                 //стренд
-        Id id_;                                                                 //айди
-        loot_gen::LootGenerator lootGenerator_;                                 //лут генератор
-        DogsId dogs_;                                                           //umap собак и айди к ним
-        lostObjectsId lostObjects_;                                             //потерянные объекты
-        std::shared_ptr<tickerTime::Ticker> lootTicker_;                        //Тикер для генерации лута
-        std::shared_ptr<tickerTime::Ticker> gameTicker_;                        //Тикер для игры
-        TimeInterval gameRefreshPeriod_;                                        //Период обновления игры
+        std::shared_ptr<model::Map> map_;
+        std::shared_ptr<SessionStrand> strand_;
+        Id id_;
+        loot_gen::LootGenerator lootGenerator_;
+        DogsId dogs_;
+        lostObjectsId lostObjects_;
+        std::shared_ptr<tickerTime::Ticker> lootTicker_;
+        std::shared_ptr<tickerTime::Ticker> gameTicker_;
+        TimeInterval gameRefreshPeriod_;
 
 
-        void GenerateLoot(const TimeInterval& interval);                        //Генерация лута
-        void GenerateLostObject();                                              //Создать потерянный объект
-        void PutLootInRndPosition(std::shared_ptr<model::LostObject> loot);     //Закинуть лут в рандомную позицию
+        void GenerateLoot(const TimeInterval& interval);
+        void GenerateLostObject();
+        void PutLootInRndPosition(std::shared_ptr<model::LostObject> loot);
 
-        void FindAndReturnLoot();                                               //Поиск и возврат лута
-        void PickUpLoot(const model::DogGather& dogGather, size_t itemID, size_t gathererID);//Поднять лут
-        void ReturnLootInOffice(const model::DogGather& dogGather, size_t itemID, size_t gathererID);//Сдать лут в офис
+        void FindAndReturnLoot();
+        void PickUpLoot(const model::DogGather& dogGather, size_t itemID, size_t gathererID);
+        void ReturnLootInOffice(const model::DogGather& dogGather, size_t itemID, size_t gathererID);
     };
 
 }

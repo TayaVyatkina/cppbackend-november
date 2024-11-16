@@ -18,7 +18,7 @@ namespace requestHandler {
     using StringResponse = http::response<http::string_body>;
     using namespace std::literals;
 
-    const std::unordered_map<std::string, std::string> CONTENT_TYPE = {                 //Тут типы файлов, которые будем использовать
+    const std::unordered_map<std::string, std::string> CONTENT_TYPE = {
         {".htm", "text/html"},
         {".html", "text/html"},
         {".css", "text/css"},
@@ -95,13 +95,13 @@ namespace requestHandler {
 
     template <typename Request>
     bool GetStaticContentFileCheck(const Request& req, const std::filesystem::path& staticContentPath) {
-        return true;            //тут пока всегда true
+        return true;
     };
 
     template <typename Request, typename Send>
     void GetStaticContentFile(const Request& req, const std::filesystem::path& staticContentPath, Send&& send) {
         http::response<http::file_body> tmpRes;
-        tmpRes.version(11);                            // это версия хттп 1.1
+        tmpRes.version(11);
         tmpRes.result(http::status::ok);
 
         std::filesystem::path staticContent{ staticContentPath };
@@ -123,7 +123,6 @@ namespace requestHandler {
 
         http::file_body::value_type file;
 
-        /*Преобразование в конст чар, напрямую путь не хочет преобразовывать*/
         std::string staticContentStr = staticContent.string();
         const char* staticContentPtr = staticContentStr.c_str();
 
@@ -137,7 +136,7 @@ namespace requestHandler {
             tmpRes.body() = std::move(file);
         }
         tmpRes.insert(http::field::cache_control, "no-cache");
-        tmpRes.prepare_payload();              //Заполнит заголовки Content-Length и Transfer-Encoding
+        tmpRes.prepare_payload();
         send(tmpRes);
     };
 

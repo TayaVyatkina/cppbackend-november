@@ -15,14 +15,13 @@ namespace requestHandler {
         using HandlerType = std::optional<size_t>(*)(const Request&, app::Application&, Send&&);
     public:
 
-        /*Всё копирование запрещено*/
         ApiRequestHandlerProxy(const ApiRequestHandlerProxy&) = delete;
         ApiRequestHandlerProxy& operator=(const ApiRequestHandlerProxy&) = delete;
         ApiRequestHandlerProxy(ApiRequestHandlerProxy&&) = delete;
         ApiRequestHandlerProxy& operator=(ApiRequestHandlerProxy&&) = delete;
 
 
-        static ApiRequestHandlerProxy& GetInstance() {                 //Ссыль на объект
+        static ApiRequestHandlerProxy& GetInstance() {
             static ApiRequestHandlerProxy obj;
             return obj;
         };
