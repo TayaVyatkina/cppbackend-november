@@ -28,49 +28,51 @@ namespace model {
             id_(id),
             name_(name) {};
 
+        /*Кострукторы копирования все дефолтные*/
         Dog(const Dog& other) = default;
         Dog(Dog&& other) = default;
         Dog& operator = (const Dog& other) = default;
         Dog& operator = (Dog&& other) = default;
         virtual ~Dog() = default;
 
-        const Id& GetId() const;                 
-        const std::string& GetName() const;       
+        const Id& GetId() const;                    //Геттер на айди
+        const std::string& GetName() const;         //Геттер на имя
 
-        const Direction GetDirection() const;     
-        void SetDirection(Direction direction);     
+        const Direction GetDirection() const;       //Геттер на направление
+        void SetDirection(Direction direction);     //Сеттер на направление
         
-        const geom::Point2D& GetPosition() const;      
-        void SetPosition(geom::Point2D position);      
+        const geom::Point2D& GetPosition() const;        //Геттер на позицию
+        void SetPosition(geom::Point2D position);        //Сеттер на позицию
         
-        const Speed& GetSpeed() const;          
-        void SetSpeed(Speed velocity);           
+        const Speed& GetSpeed() const;              //Геттер на скорость
+        void SetSpeed(Speed velocity);              //Сеттер на скорость
         
-        void Move(Direction direction, double speed);
-        geom::Point2D CalculateNewPosition(const std::chrono::milliseconds& diffTime);     
+        void Move(Direction direction, double speed); //Двигать собаку
+        geom::Point2D CalculateNewPosition(const std::chrono::milliseconds& diffTime);      //Новая позиция собаки
 
-        const collision_detector::Gatherer& GetGatherer() const;                   
+        const collision_detector::Gatherer& GetGatherer() const;                    //Геттер на собирателя
 
-        bool CheckFullBag();                                                        
-        bool CheckEmptyBag();                                                      
-        void PickUpLoot(std::shared_ptr<LostObject> obj);                           
-        void ReturnLootInOffice();                                                
-        const std::vector<std::shared_ptr<LostObject>>& GetBag() const;            
-        const size_t GetScore() const;                                              
+        bool CheckFullBag();                                                        //Проверка что сумка полная
+        bool CheckEmptyBag();                                                       //Проверка что сумка пустая
+        void PickUpLoot(std::shared_ptr<LostObject> obj);                           //Поднять предмет
+        void ReturnLootInOffice();                                                  //Сдать в офис найденный предмет
+        const std::vector<std::shared_ptr<LostObject>>& GetBag() const;             //Геттер на сумку
+        const size_t GetScore() const;                                              //Геттер на очки
     private:
-        Id id_;                                                                   
-        std::string name_;                                                         
-        Direction direction_{ Direction::NORTH };                                 
-        geom::Point2D position_{ 0.0, 0.0 };                                   
-        Speed speed_{ 0.0, 0.0 };                                               
+        Id id_;                                                                     //айди
+        std::string name_;                                                          //имя
+        Direction direction_{ Direction::NORTH };                                   //направление
+        geom::Point2D position_{ 0.0, 0.0 };                                        //позиция
+        Speed speed_{ 0.0, 0.0 };                                                   //скорость
 
-        std::vector<std::shared_ptr<LostObject>> bag_;                            
-        size_t bagSize_ = 0;                                                       
+        std::vector<std::shared_ptr<LostObject>> bag_;                              //сумка для сбора лута
+        size_t bagSize_ = 0;                                                        //Размер сумки
 
-        collision_detector::Gatherer gatherer_{ {0.0, 0.0}, {0.0, 0.0}, DOG_WIDTH}; 
-        size_t score_ = 0;                                                         
+        collision_detector::Gatherer gatherer_{ {0.0, 0.0}, {0.0, 0.0}, DOG_WIDTH}; //Собиратель
+        size_t score_ = 0;                                                          //Очки за собирательство
 
 
-        void AccumulateScore(size_t score);                                        
+        void AccumulateScore(size_t score);                                         //Аккумуляция очков в поле score_
+    };
 
 }

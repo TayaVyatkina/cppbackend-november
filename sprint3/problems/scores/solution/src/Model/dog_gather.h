@@ -18,6 +18,7 @@ namespace model {
 		:	items_(std::move(items)), 
 			dogs_(std::move(dogs)){};
 
+		/*Тут все перегрузки из ItemGathererProvider*/
 		 size_t ItemsCount() const override;
 		 collision_detector::Item GetItem(size_t idx) const override;
 		 size_t GatherersCount() const override;
@@ -27,6 +28,7 @@ namespace model {
 
 		 const model::LostObject* GetLostObj(size_t idx) const;
 
+		 /*Вирутальный деструктор*/
 		 virtual ~DogGather() = default;
 
 	private:

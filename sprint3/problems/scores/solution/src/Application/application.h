@@ -26,8 +26,9 @@ namespace app {
             ioc_(ioc),
             strand_(std::make_shared<StrandApp>(net::make_strand(ioc))) {
      
-        };
+        };     //конструктор. 
 
+        /*Запретить все копирования, присваивания и мувы*/
         Application(const Application& other) = delete;
         Application(Application&& other) = delete;
         Application& operator = (const Application& other) = delete;

@@ -91,4 +91,7 @@ namespace model {
         {Direction::EAST, Direction::WEST},
         {Direction::UNKNOWN, Direction::UNKNOWN}
     };
+
+
+
 }

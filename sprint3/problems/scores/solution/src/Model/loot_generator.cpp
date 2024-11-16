@@ -21,4 +21,4 @@ unsigned LootGenerator::Generate(TimeInterval time_delta, unsigned loot_count,
     return generated_loot;
 }
 
-} 
+} // namespace loot_gen

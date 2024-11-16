@@ -23,25 +23,25 @@ namespace app {
         virtual ~Player() = default;
 
 
-        void SetGameSession(std::shared_ptr<GameSession> session); 
+        void SetGameSession(std::shared_ptr<GameSession> session);          //Задать игровую сессию
         void SetDog(const std::string& dog_name, 
                     const model::Map& map, 
-                    bool randomize_spawn_points);                        
+                    bool randomize_spawn_points);                           //Сеттер собаки
 
-        const Id& GetId() const;                                            
-        const std::string& GetName() const;                                 
-        const GameSession::Id& GetSessionId() const;                        
-        std::shared_ptr<GameSession> GetSession();                          
-        std::shared_ptr<model::Dog> GetDog();                               
+        const Id& GetId() const;                                            //Геттер на айди
+        const std::string& GetName() const;                                 //Геттер на имя
+        const GameSession::Id& GetSessionId() const;                        //Геттер на сессию
+        std::shared_ptr<GameSession> GetSession();                          //Геттер на сессию указатель
+        std::shared_ptr<model::Dog> GetDog();                               //Геттер на собаку
 
     private:
-        void PutDogInRndPosition(const model::Map& map);                    
-        void PutDogInStartPosition(const model::Map& map);                  
+        void PutDogInRndPosition(const model::Map& map);                    //Разместить на рандомной позиции собаку
+        void PutDogInStartPosition(const model::Map& map);                  //Разместить на переданной позиции собаку
 
-        Id id_;                                                            
-        std::string name_;                                                 
-        std::shared_ptr<GameSession> session_;                              
-        std::shared_ptr<model::Dog> dog_;                                   
+        Id id_;                                                             //айди
+        std::string name_;                                                  //имя
+        std::shared_ptr<GameSession> session_;                              //сессия в игре
+        std::shared_ptr<model::Dog> dog_;                                   //собака игрока
     };
 
 }

@@ -15,7 +15,7 @@ namespace app {
         return game_.FindMap(id);
     };
 
-    std::tuple<auth::Token, Player::Id> Application::JoinGame(              
+    std::tuple<auth::Token, Player::Id> Application::JoinGame(               //Если разрастётся, то придётся тапл на структуру поменять
         const std::string& name,
         const model::Map::Id& id) {
 

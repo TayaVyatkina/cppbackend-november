@@ -70,7 +70,7 @@ namespace model {
     geom::Point2D Dog::CalculateNewPosition(const std::chrono::milliseconds& diffTime) {
         geom::Point2D pos = GetPosition();
         const Speed& speed = GetSpeed();
-        pos.x += speed.vx * diffTime.count() / CONVERT_MS_TO_S; 
+        pos.x += speed.vx * diffTime.count() / CONVERT_MS_TO_S;          //1000 - перевод из мс в с
         pos.y += speed.vy * diffTime.count() / CONVERT_MS_TO_S;
         return pos;
     };

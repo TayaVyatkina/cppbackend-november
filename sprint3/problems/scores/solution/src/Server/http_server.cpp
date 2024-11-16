@@ -35,7 +35,7 @@ void SessionBase::Read() {
 void SessionBase::OnRead(beast::error_code ec, [[maybe_unused]] std::size_t bytes_read) {
     using namespace std::literals;
     if (ec == http::error::end_of_stream) {
-                return Close();
+                return Close();                         //������� �� ���������� �������
     }
     if (ec) {
         return ErrorMessage(ec, "Read Error"sv);
@@ -60,7 +60,7 @@ void SessionBase::OnWrite(bool close, beast::error_code ec, [[maybe_unused]] std
     }
 
  
-    Read();
+    Read();                     //������ ��. ������
 }
 
-}
+}  // namespace http_server

@@ -17,7 +17,7 @@ namespace model {
         }
         catch (...) {
             
-            offices_.pop_back();
+            offices_.pop_back();  // Возвращаем всё назад, из-за исключения
             throw;
         }
     }
@@ -98,4 +98,4 @@ namespace model {
         return roadLayout_.GetValidMove(current_pos, target_pos, current_spd);
     };
 
-}
+}  // namespace model

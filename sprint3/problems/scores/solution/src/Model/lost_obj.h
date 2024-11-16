@@ -17,15 +17,19 @@ namespace model {
 			Item({0, 0}, width)
 		{};
 
+		/*Сеттер и геттер позиции теперь берутся из базового класса Item*/
+
+		/*Геттеры*/
 		const Id& GetId() const;
 		size_t GetValue() const;
 
+		/*Сеттеры*/
 		void SetValue(size_t value);
 
 	private:
-		inline static size_t start_id_ = 0;		
-		Id id_;									
-		size_t value_{ 0 };						
+		inline static size_t start_id_ = 0;		//С этого номера будут увеличиваться айдишники
+		Id id_;									//Ид объекта
+		size_t value_{ 0 };						//Для подсчёта очков
 	};
 
 
