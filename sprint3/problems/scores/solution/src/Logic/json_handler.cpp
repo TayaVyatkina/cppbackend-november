@@ -4,6 +4,7 @@
 #include <sstream>
 #include <boost/json/array.hpp>
 #include <boost/json.hpp>
+#include <iostream>
 
 namespace jsonOperation {
 
