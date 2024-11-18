@@ -83,7 +83,6 @@ add_executable(game_server
 	src/Server/static_file_request_handler_proxy.h
 	src/Server/request_handler.h
 	src/Server/request_handler_unit.h
-	src/Server/request_handler.cpp
 	src/Server/http_server.cpp
 	src/Server/http_server.h
 	src/Logic/ticker.h

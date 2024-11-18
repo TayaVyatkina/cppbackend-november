@@ -8,8 +8,6 @@
 #include <string>
 #include <iostream>
 
-
-
 namespace requestHandler {
 
     namespace beast = boost::beast;

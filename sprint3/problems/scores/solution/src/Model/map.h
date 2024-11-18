@@ -13,8 +13,6 @@
 #include <utility>
 #include <cstddef>
 
-
-
 namespace model {
 
     namespace json = boost::json;

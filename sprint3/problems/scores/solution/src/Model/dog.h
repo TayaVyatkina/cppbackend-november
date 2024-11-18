@@ -13,7 +13,6 @@
 
 namespace model {
 
-
     class Dog {
         inline static size_t cntMaxId = 0;
 

@@ -108,6 +108,7 @@ namespace jsonOperation {
             return std::tie(player_name, map_id);
         }
         catch (...) {
+            std::cerr << "json parsing error" << std::endl;
             return std::nullopt;
         }
     };
@@ -178,6 +179,7 @@ namespace jsonOperation {
             return direction;
         }
         catch (...) {
+            std::cerr << "parsing player action error" << std::endl;
             return std::nullopt;
         }
     };
@@ -209,6 +211,7 @@ namespace jsonOperation {
             return time_delta;
         }
         catch (...) {
+            std::cerr << "setting delta time request error" << std::endl;
             return std::nullopt;
         }
     };

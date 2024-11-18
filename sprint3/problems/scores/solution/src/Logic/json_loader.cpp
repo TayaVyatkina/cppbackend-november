@@ -44,13 +44,17 @@ namespace json_loader {
             double dogSpeed = boost::json::value_to<double>(jsonVal.as_object().at(model::DEFAULT_DOG_SPEED));
             game.SetInitDogSpeed(dogSpeed);
         }
-        catch (...) {}
+        catch (...) {
+            std::cerr << "setting init dog speed error" << std::endl;
+        }
 
         try {
             double dogBagSize = boost::json::value_to<double>(jsonVal.as_object().at(model::DEFAULT_BAG_CAPACITY));
             game.SetInitDogBagSize(dogBagSize);
         }
-        catch (...) {}
+        catch (...) {
+            std::cerr << "setting init bag size error" << std::endl;
+        }
 
         return game;
     };

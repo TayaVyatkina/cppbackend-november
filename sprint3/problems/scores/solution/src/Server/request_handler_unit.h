@@ -8,7 +8,6 @@ namespace requestHandler {
     namespace beast = boost::beast;
     namespace http = beast::http;
 
-
     template<typename Activator, typename Handler>
     class RHUnit {
     public:
@@ -31,9 +30,7 @@ namespace requestHandler {
             if (handlers_.contains(method)) {
                 return handlers_[method];
             }
-            else {
-                return faultHandler_;
-            }
+            return faultHandler_;
         };
 
         Handler GetAddHandlerByIndex(size_t idx) {

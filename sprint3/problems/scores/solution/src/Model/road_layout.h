@@ -10,7 +10,6 @@
 
 namespace model {
 
-
 	class RoadLayout {					
 	public:
 		using Roads = std::vector<Road>;
@@ -76,8 +75,6 @@ namespace model {
 		bool IsValidPositionOnRoad(const Road& road, const geom::Point2D& pos);
 
 		void CopyAll(const Roads& roads);
-
-
 
 	};
 

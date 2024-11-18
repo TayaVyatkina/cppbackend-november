@@ -92,6 +92,4 @@ namespace model {
         {Direction::UNKNOWN, Direction::UNKNOWN}
     };
 
-
-
 }

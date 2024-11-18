@@ -126,7 +126,9 @@ namespace app {
     void GameSession::ReturnLootInOffice(const model::DogGather& dogGather, size_t itemID, size_t gathererID) {
         if (!dogGather.GetItem(itemID).GetType()) {
             auto dog = dogs_[dogGather.GetDogIdFromIdx(gathererID)];
-            if (dog->CheckEmptyBag()) return;
+            if (dog->CheckEmptyBag()) {
+                return;
+            }
             dog->ReturnLootInOffice();
         }
     }
