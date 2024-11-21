@@ -1,6 +1,5 @@
 #include "road.h"
 
-
 namespace model {
 
     void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, const Road& road) {

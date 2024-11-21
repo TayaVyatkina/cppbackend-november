@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cmath>
 
-
 namespace loot_gen {
 
 unsigned LootGenerator::Generate(TimeInterval time_delta, unsigned loot_count,
@@ -21,4 +20,4 @@ unsigned LootGenerator::Generate(TimeInterval time_delta, unsigned loot_count,
     return generated_loot;
 }
 
-} // namespace loot_gen
+}

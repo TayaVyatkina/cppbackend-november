@@ -1,6 +1,5 @@
 #include "dog_serialize.h"
 
-
 namespace serialization {
 
 	model::Dog DogRepr::Restore() const {

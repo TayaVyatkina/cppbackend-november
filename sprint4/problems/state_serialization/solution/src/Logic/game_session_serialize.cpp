@@ -1,7 +1,7 @@
 #include "game_session_serialize.h"
 
-
 namespace serialization {
+
 	model::Map::Id GameSessionRepr::RestoreMapId() const {
 		return model::Map::Id(mapId_);
 	};

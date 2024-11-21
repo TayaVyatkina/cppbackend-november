@@ -48,9 +48,6 @@ namespace model {
         std::string name{ "" };
         std::string file{ "" };
         std::string type{ "" };
-        /*-2147483648 (INT_MIN) по умолчанию, чтобы при отсутствие в конфигурации этого поля,
-        в респонсах это поле просто игнорировалось, а не выводилось со значением 0
-        */
         int rotation{ INT_MIN };      
         std::string color{ "" };
         double scale{ 0.0 };
@@ -98,7 +95,7 @@ namespace model {
         {Direction::UNKNOWN, Direction::UNKNOWN}
     };
 
-} //end namespace model
+}
 
 namespace savegame {
 
@@ -107,4 +104,4 @@ namespace savegame {
         std::optional<std::chrono::milliseconds> saved_tick_period;
     };
 
-} //end namespace savegame
+}

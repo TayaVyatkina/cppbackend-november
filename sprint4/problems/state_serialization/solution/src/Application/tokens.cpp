@@ -27,5 +27,4 @@ namespace auth {
         tokenToPlayer_[token] = player;
     }
 
-
 }

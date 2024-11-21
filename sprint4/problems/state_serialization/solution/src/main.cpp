@@ -17,8 +17,6 @@
 #include "typedef.h"    
 
 
-//#define DEBUG
-
 using namespace std::literals;
 namespace net = boost::asio;
 namespace sys = boost::system;
@@ -60,13 +58,13 @@ int main(int argc, const char* argv[]) {
 #ifndef DEBUG
         model::Game game = json_loader::LoadGame(args.value().config_file);
 #else
-        model::Game game = json_loader::LoadGame("data/config.json");                       //для дебага
+        model::Game game = json_loader::LoadGame("data/config.json");                       
 #endif
         // 2. Устанавливаем путь до статического контента.
 #ifndef DEBUG
         std::filesystem::path staticContentPath{ args.value().www_root };
 #else
-        std::filesystem::path staticContentPath{"static"};                                  //для дебага
+        std::filesystem::path staticContentPath{"static"};                                  
 #endif
         // 3. Инициализируем io_context
         const unsigned num_threads = std::thread::hardware_concurrency();

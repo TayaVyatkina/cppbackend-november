@@ -21,7 +21,6 @@ namespace serialization {
 		GameSessionRepr(app::GameSession& session, TokenPlayer tokenPlayer)
 			:mapId_(*session.GetMap()->GetId())
 		{
-			/*Приведение типа, аналогично как в DogRepr*/
 			auto ConvertPlayerToSerializedPlayer = [](const auto& tokenPlayerInput)->PlayerRepr {
 				return PlayerRepr(*tokenPlayerInput.second, tokenPlayerInput.first);
 				};

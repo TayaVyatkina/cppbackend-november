@@ -24,7 +24,6 @@ namespace app {
     public:
         using StrandApp = net::strand<net::io_context::executor_type>;
 
-        //Мапа соответствия токена и игорька,для сериализации
         using TokenPlayer = std::unordered_map< auth::Token, std::shared_ptr<app::Player>, auth::TokenHasher>;
 
         Application(model::Game game, size_t tick_period, bool randomize_pos, net::io_context& ioc) :
@@ -33,9 +32,8 @@ namespace app {
             randomizePosition_{ randomize_pos },
             ioc_(ioc){
      
-        };     //конструктор. 
+        };
 
-        /*Запретить все копирования, присваивания и мувы*/
         Application(const Application& other) = delete;
         Application(Application&& other) = delete;
         Application& operator = (const Application& other) = delete;
@@ -83,7 +81,6 @@ namespace app {
         void BindPlayerInSession(std::shared_ptr<Player> player,                                            //Забиндить игорька в сессию
             std::shared_ptr<GameSession> session);
 
-        /*Тут всё для сохранения и восстановления игры*/
         savegame::SavedFileParameters savedParameters_;
         std::shared_ptr<tickerTime::Ticker> saveTicker_;                                                    //Тикер для переодичного сейва
         std::unordered_map<std::shared_ptr<GameSession>, TokenPlayer> sessionToTokenPlayer_;                //Мапа сессий с токенами игроков

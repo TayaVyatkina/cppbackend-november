@@ -60,5 +60,4 @@ namespace model {
     void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, const Road& road);
     Road tag_invoke(boost::json::value_to_tag<Road>, const boost::json::value& jv);
 
-
 }
