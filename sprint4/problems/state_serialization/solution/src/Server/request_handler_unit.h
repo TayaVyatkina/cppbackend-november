@@ -31,9 +31,7 @@ namespace requestHandler {
             if (handlers_.contains(method)) {
                 return handlers_[method];
             }
-            else {
-                return faultHandler_;
-            }
+            return faultHandler_;
         };
 
         Handler GetAddHandlerByIndex(size_t idx) {
