@@ -202,3 +202,4 @@ TEST_CASE("Два собирателя два лута", FIND_GATHER_EVENTS_TAG)
     CHECK_THAT(events[1].sq_distance, WithinAbs(0.0, 1e-10));
     CHECK_THAT(events[1].time, WithinAbs((item2.position.x / gatherer2.end_pos.x), 1e-10));
 }
+
