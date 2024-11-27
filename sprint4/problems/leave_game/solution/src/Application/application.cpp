@@ -17,7 +17,7 @@ namespace app {
         return game_.FindMap(id);
     };
 
-    std::tuple<auth::Token, Player::Id> Application::JoinGame(               //Если разрастётся, то придётся тапл на структуру поменять
+    std::tuple<auth::Token, Player::Id> Application::JoinGame(
         const std::string& name,
         const model::Map::Id& id) {
 
@@ -72,8 +72,6 @@ namespace app {
         return !playerTokens_.FindPlayerByToken(token).expired();
     };
 
-    /*Сюда попадаем, только если ручное управление временем.
-    При автоматическом управлении апдейтер будет вызывать тикер игры, а сохранения тикер сохранений*/
     void Application::UpdateGameState(const std::chrono::milliseconds& time) {
 
         for (auto [id, session] : sessions_) {
@@ -114,7 +112,6 @@ namespace app {
             }
         }
 
-        /*Для паттерна "Наблюдатель" передадим линк на функции в GameSession из текущего класса*/
         auto SaveLambda = [self = shared_from_this()](const std::vector<app::PlayerDataForPostgres>& data) {
             self->SavePlayerDataInDB(data);
             };
@@ -145,7 +142,7 @@ namespace app {
     void Application::SaveGame() {
 
         if (!savedParameters_.save_file_path.has_value()) {
-            return; //Путь пуст, некуда сериализировать
+            return;
         }
 
         std::vector<serialization::GameSessionRepr> serializedSessions = SerializeGame();
@@ -160,7 +157,7 @@ namespace app {
 
     std::vector<serialization::GameSessionRepr> Application::SerializeGame() {
 
-        std::vector<serialization::GameSessionRepr> serializedSession_;        //Сюда будем наполнять сериализированные данные
+        std::vector<serialization::GameSessionRepr> serializedSession_;
         for (const auto& [id, session] : sessions_) {
             std::unordered_map < auth::Token, std::shared_ptr<app::Player>, auth::TokenHasher> tokenPlayer;
 
@@ -177,18 +174,14 @@ namespace app {
 
         savedParameters_ = parameters;
 
-        /*Тут загрузка параметров, десериализация из файла*/
         DeserializationGameState();
 
         if (!(savedParameters_.save_file_path.has_value() && savedParameters_.saved_tick_period.has_value())
             || CheckTimeManage()) {
-            return;  //Переданы пустые параметры, ни файла ни периода или ручное управление временем. Уходим.
+            return;
         }
 
-        /*Включим тикер на сохранения*/
         StartSaveTicker();
-        //Тикер используется, только при автоматическом управлении временем.
-        //При ручном управлении временем используется SaveGamePeriodically
     }
 
     void Application::StartSaveTicker() {
@@ -205,22 +198,22 @@ namespace app {
     void Application::DeserializationGameState() {
 
         if (!savedParameters_.save_file_path.has_value()) {
-            return; //Путь пуст, нечего десереализировать
+            return;
         }
 
-        std::vector<serialization::GameSessionRepr> serializedSession_;        //Сюда считаем сериализованные сессии
+        std::vector<serialization::GameSessionRepr> serializedSession_;
         std::fstream inputFile;
         inputFile.open(savedParameters_.save_file_path.value(), std::ios_base::in);
 
         if (!inputFile.is_open()) {
-            return;             //файл не открылся, значит его нет, выходим
+            return;
         }
 
         boost::archive::text_iarchive iarchive{ inputFile };
-        iarchive >> serializedSession_;                                         //Считали сессии
-        inputFile.close();                                                      //Закрыли файл
+        iarchive >> serializedSession_;
+        inputFile.close();
 
-        for (const serialization::GameSessionRepr& session : serializedSession_) {  //Идём по сессиям и парсим все данные по параметрам
+        for (const serialization::GameSessionRepr& session : serializedSession_) {
             std::shared_ptr<GameSession> tmpGameSession = std::make_shared<GameSession>(
                 game_.FindMap(session.RestoreMapId()),
                 tickPeriod_,
@@ -228,7 +221,7 @@ namespace app {
                 ioc_
             );
 
-            for (const auto& player : session.GetSerializedPlayers()) {         //Парсим игроков
+            for (const auto& player : session.GetSerializedPlayers()) {
                 auto tmpDog = std::make_shared<model::Dog>(std::move(player.RestoreDog()));
                 auto tmpPlayer = std::make_shared<app::Player>(std::move(player.RestoreIdName()));
                 auto tmpToken = player.RestorePlayerToken();
@@ -240,11 +233,10 @@ namespace app {
 
             }
 
-            for (const auto& lostObj : session.GetSerializedLostObj()) {        //Парсим лут
+            for (const auto& lostObj : session.GetSerializedLostObj()) {
                 tmpGameSession->SetLostObject(lostObj.Restore());
             }
 
-            /*Добавляем сессию и стартуем её*/
             AddGameSession(tmpGameSession);
             tmpGameSession->StartGame();
         }
@@ -273,7 +265,6 @@ namespace app {
     }
 
     void Application::DeleteAFKPlayers(const GameSession::Id& input_id) {
-        //https://habr.com/ru/companies/piter/articles/706866/ шпаргалка по умным указателям
         TokenPlayer tmpPlayersForDelete;
 
         for (const auto& [token, id] : sessionToTokenPlayer_.at(input_id)) {

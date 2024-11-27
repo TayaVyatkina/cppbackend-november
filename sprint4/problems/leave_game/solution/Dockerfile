@@ -36,8 +36,7 @@ COPY CMakeLists.txt /app/
 # команда для сборки сервера:
 RUN cd /app/build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    cmake --build . 
-    #-j4
+    cmake --build . --parallel 12 
 
 # Контейнер для запуска сервера
 FROM ubuntu:22.04 as run
