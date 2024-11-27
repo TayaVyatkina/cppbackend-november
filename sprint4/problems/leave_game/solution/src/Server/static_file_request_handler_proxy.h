@@ -13,19 +13,18 @@ namespace requestHandler {
         using HandlerType = void(*)(const Request&, const std::filesystem::path&, Send&&);
 
     public:
-        /*Всё копирование запрещено*/
         StaticFileRequestHandlerProxy(const StaticFileRequestHandlerProxy&) = delete;
         StaticFileRequestHandlerProxy& operator=(const StaticFileRequestHandlerProxy&) = delete;
         StaticFileRequestHandlerProxy(StaticFileRequestHandlerProxy&&) = delete;
         StaticFileRequestHandlerProxy& operator=(StaticFileRequestHandlerProxy&&) = delete;
 
 
-        static StaticFileRequestHandlerProxy& GetInstance() {                                               //Ссыль на объект
+        static StaticFileRequestHandlerProxy& GetInstance() {
             static StaticFileRequestHandlerProxy obj;
             return obj;
         };
 
-        bool Execute(const Request& req, const std::filesystem::path& static_content_root, Send&& send) {   //Сам исполнитель
+        bool Execute(const Request& req, const std::filesystem::path& static_content_root, Send&& send) {
             for (auto item : requests_) {
                 if (item.GetActivator()(req, static_content_root)) {
                     item.GetHandler(req.method())(req, static_content_root, std::move(send));

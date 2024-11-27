@@ -1,6 +1,5 @@
 #include "lo_serialize.h"
 
-
 namespace serialization {
 
 	model::LostObject LostObjRepr::Restore() const {

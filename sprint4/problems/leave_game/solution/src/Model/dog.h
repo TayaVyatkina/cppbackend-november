@@ -13,15 +13,13 @@
 
 namespace model {
 
-
     class Dog {
         inline static size_t cntMaxId = 0;
-        //Установка максимального времени простоя, метод статический для jsona
-        static inline std::chrono::seconds maxDownTime_{ MINUTE_IN_S };             //Берем из jsona максимальное время простоя
+        static inline std::chrono::seconds maxDownTime_{ MINUTE_IN_S };
         
     public:
         using Id = util::Tagged<size_t, Dog>;
-        static void SetMaxStoppedTime(size_t time/*тут время в секундах!!!*/);
+        static void SetMaxStoppedTime(size_t time);
 
         Dog() = default;
         Dog(std::string name, size_t bagSize) :
@@ -36,60 +34,59 @@ namespace model {
             bagSize_(bagSize) 
         {};
 
-        /*Кострукторы копирования все дефолтные*/
         Dog(const Dog& other) = default;
         Dog(Dog&& other) = default;
         Dog& operator = (const Dog& other) = default;
         Dog& operator = (Dog&& other) = default;
         virtual ~Dog() = default;
 
-        const Id& GetId() const;                    //Геттер на айди
-        const std::string& GetName() const;         //Геттер на имя
+        const Id& GetId() const;
+        const std::string& GetName() const;
 
-        const Direction GetDirection() const;       //Геттер на направление
-        void SetDirection(Direction direction);     //Сеттер на направление
+        const Direction GetDirection() const;
+        void SetDirection(Direction direction);
         
-        const geom::Point2D& GetPosition() const;        //Геттер на позицию
-        void SetPosition(geom::Point2D position);        //Сеттер на позицию
+        const geom::Point2D& GetPosition() const;
+        void SetPosition(geom::Point2D position);
         
-        const Speed& GetSpeed() const;              //Геттер на скорость
-        void SetSpeed(Speed speed);              //Сеттер на скорость
+        const Speed& GetSpeed() const;
+        void SetSpeed(Speed speed);
         
-        void Move(Direction direction, double speed); //Двигать собаку
-        geom::Point2D CalculateNewPosition(const std::chrono::milliseconds& diffTime);      //Новая позиция собаки
+        void Move(Direction direction, double speed);
+        geom::Point2D CalculateNewPosition(const std::chrono::milliseconds& diffTime);
 
-        const collision_detector::Gatherer& GetGatherer() const;                    //Геттер на собирателя
+        const collision_detector::Gatherer& GetGatherer() const;
 
-        bool CheckFullBag() const;                                                  //Проверка что сумка полная
-        bool CheckEmptyBag() const;                                                 //Проверка что сумка пустая
-        void PickUpLoot(std::shared_ptr<LostObject> obj);                           //Поднять предмет
-        void ReturnLootInOffice();                                                  //Сдать в офис найденный предмет
-        const std::vector<std::shared_ptr<LostObject>>& GetBag() const;             //Геттер на сумку
-        const size_t GetScore() const;                                              //Геттер на очки
-        const size_t GetBagSize() const;                                            //Геттер размер сумки
-        std::chrono::seconds GetOnlineTime();                                       //Геттер на общее время игры
-        bool isDogSubjToDelete();                                                   //Собаку нужно удалить как неактивную?
-        void AccumulateOnlineTime(std::chrono::milliseconds time);                  //Метод для накопления времени игры
-        void AccumulateDownTime(std::chrono::milliseconds time);                    //Метод для накопления времени игры
-        DogActivity GetDogActivity();                                               //Геттер на активность собаки
+        bool CheckFullBag() const;
+        bool CheckEmptyBag() const;
+        void PickUpLoot(std::shared_ptr<LostObject> obj);
+        void ReturnLootInOffice();
+        const std::vector<std::shared_ptr<LostObject>>& GetBag() const;
+        const size_t GetScore() const;
+        const size_t GetBagSize() const;
+        std::chrono::seconds GetOnlineTime();
+        bool isDogSubjToDelete();
+        void AccumulateOnlineTime(std::chrono::milliseconds time);
+        void AccumulateDownTime(std::chrono::milliseconds time);
+        DogActivity GetDogActivity();
     private:
-        Id id_;                                                                     //айди
-        std::string name_;                                                          //имя
-        Direction direction_{ Direction::NORTH };                                   //направление
-        geom::Point2D position_{ 0.0, 0.0 };                                        //позиция
-        Speed speed_{ 0.0, 0.0 };                                                   //скорость
+        Id id_;
+        std::string name_;
+        Direction direction_{ Direction::NORTH };
+        geom::Point2D position_{ 0.0, 0.0 };
+        Speed speed_{ 0.0, 0.0 };
 
-        std::vector<std::shared_ptr<LostObject>> bag_;                              //сумка для сбора лута
-        size_t bagSize_ = 0;                                                        //Размер сумки
+        std::vector<std::shared_ptr<LostObject>> bag_;
+        size_t bagSize_ = 0;
 
-        collision_detector::Gatherer gatherer_{ {0.0, 0.0}, {0.0, 0.0}, DOG_WIDTH}; //Собиратель
-        size_t score_ = 0;                                                          //Очки за собирательство
-        void AccumulateScore(size_t score);                                         //Аккумуляция очков в поле score_
+        collision_detector::Gatherer gatherer_{ {0.0, 0.0}, {0.0, 0.0}, DOG_WIDTH};
+        size_t score_ = 0;
+        void AccumulateScore(size_t score);
 
 
-        DogActivity activity_;                                                      //Состояние собаки, идёт или стоит
-        std::chrono::milliseconds onlineTime_{ 0 };                                 //Общее время проведённое в игре
-        std::chrono::milliseconds downTime_{ 0 };                                   //Текущее время бездействия
+        DogActivity activity_;
+        std::chrono::milliseconds onlineTime_{ 0 };
+        std::chrono::milliseconds downTime_{ 0 };
         
 
     };

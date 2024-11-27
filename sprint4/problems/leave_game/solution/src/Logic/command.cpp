@@ -1,7 +1,6 @@
 #include "command.h"
 #include "logger.h"
 
-
 namespace programm_option {
 
     using namespace std::literals;

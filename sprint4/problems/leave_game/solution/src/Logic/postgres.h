@@ -6,7 +6,6 @@
 
 namespace postgres {
 
-
     class PlayerDataRepositoryImpl : public app::PlayerDataRepository {
     public:
         explicit PlayerDataRepositoryImpl(Connection::ConnectionPool& pool)
@@ -21,7 +20,6 @@ namespace postgres {
 
     class Database {
     public:
-        /*Тут надо будет из пула полуичть соединение и создать таблицу если её нет*/
         explicit Database(const Connection::ConnectionConfig& connectionCfg); 
 
         PlayerDataRepositoryImpl& GetDataFromImpl()& {

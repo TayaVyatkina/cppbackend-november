@@ -49,7 +49,7 @@ namespace model {
     void Dog::Move(Direction direction, double speed) {
 
         if (direction != Direction::UNKNOWN) {
-            downTime_ = std::chrono::milliseconds{0};    //сбрасываем врмя простоя
+            downTime_ = std::chrono::milliseconds{0};
         }
 
         switch (direction) {
@@ -83,7 +83,7 @@ namespace model {
     geom::Point2D Dog::CalculateNewPosition(const std::chrono::milliseconds& diffTime) {
         geom::Point2D pos = GetPosition();
         const Speed& speed = GetSpeed();
-        pos.x += speed.vx * diffTime.count() / CONVERT_MS_TO_S;          //1000 - перевод из мс в с
+        pos.x += speed.vx * diffTime.count() / CONVERT_MS_TO_S;
         pos.y += speed.vy * diffTime.count() / CONVERT_MS_TO_S;
         return pos;
     };
@@ -128,7 +128,7 @@ namespace model {
         return bagSize_;
     }
 
-    void Dog::SetMaxStoppedTime(size_t time/*тут время в секундах!!!*/) {
+    void Dog::SetMaxStoppedTime(size_t time) {
         maxDownTime_ = std::chrono::seconds(time);
     };
 

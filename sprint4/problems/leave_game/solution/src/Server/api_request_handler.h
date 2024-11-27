@@ -481,7 +481,7 @@ namespace requestHandler {
         std::shared_ptr<app::Application> application,
         Send&& send) {
 
-        if (!application->CheckTimeManage()) {                                   //--tick-period передан?
+        if (!application->CheckTimeManage()) {
             StringResponse response(http::status::bad_request, req.version());
             response.set(http::field::content_type, "application/json");
             response.set(http::field::cache_control, "no-cache");
@@ -524,7 +524,6 @@ namespace requestHandler {
         return std::nullopt;
     }
 
-    /*по сути приведение типа в outType*/
     template<typename outType>
     outType ReadValueFromUrl(const boost::urls::params_view& params, const std::string& key) {
         std::stringstream stream;

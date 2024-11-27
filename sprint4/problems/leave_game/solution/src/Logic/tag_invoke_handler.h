@@ -5,7 +5,6 @@
 #include <boost/json.hpp>
 
 namespace model {
-	//Сюда надо перенести все tag invoke, для дальнейшего рефактора
 
 	LootGenCfg tag_invoke(boost::json::value_to_tag<LootGenCfg>, const boost::json::value& jv);
 	

@@ -6,7 +6,6 @@
 
 namespace jsonOperation {
 
-	/*Тут для респосов*/
 	const std::string RESPONSE_CODE = "code";
 	const std::string RESPONSE_MESSAGE = "message";
 	const std::string RESPONSE_AUTHTOKEN = "authToken";
@@ -27,41 +26,40 @@ namespace jsonOperation {
 	const std::string RESPONSE_RECORDS_SCORE = "score";
 	const std::string RESPONSE_RECORDS_PLAY_TIME = "playTime";
 
-	/*Тут для реквестов*/
 	const std::string REQUEST_NAME = "userName";
 	const std::string REQUEST_MAPID = "mapId";
 	const std::string REQUEST_MOVE = "move";
 	const std::string REQUEST_TIME_DELTA = "timeDelta";
 
-	std::string GameToJson(const model::Game::Maps& game);		//Конвертер всего в строку
-	std::string MapToJson(const model::Map& map);				//Конвертер мапы в строку
+	std::string GameToJson(const model::Game::Maps& game);
+	std::string MapToJson(const model::Map& map);
 
-	std::string PageNotFound();									//Выдать, что страница не найдена
-	std::string BadRequest();									//Выдать, что кривой запрос
-	std::string MapNotFound();									//Выдать, что карту не нашел
+	std::string PageNotFound();
+	std::string BadRequest();
+	std::string MapNotFound();
 
 	
-	std::string JoinToGameInvalidArgument();															//Передали кривые аргументы
-	std::string JoinToGameMapNotFound();																//При заходе в игру не нашли карту
-	std::string JoinToGameEmptyPlayerName();															//Задали пустое имя
-	std::string PlayersListOnMap(const std::vector< std::shared_ptr<app::Player> >& players);				//Выдать списко игорьков
-	std::string InvalidMethod();																		//Выдать invalid method
-	std::string EmptyAuthorization();																	//Выдать, что никто не авторихвоан при запросе списка игорьков
-	std::string UnknownToken();																			//Выдать, что кривой токен при запросе списка игорьков
-	std::string JoinToGame(const std::string& token, size_t player_id);									//Выдать, что вошли в игру
+	std::string JoinToGameInvalidArgument();
+	std::string JoinToGameMapNotFound();
+	std::string JoinToGameEmptyPlayerName();
+	std::string PlayersListOnMap(const std::vector< std::shared_ptr<app::Player> >& players);
+	std::string InvalidMethod();
+	std::string EmptyAuthorization();
+	std::string UnknownToken();
+	std::string JoinToGame(const std::string& token, size_t player_id);
 	std::string GameState(const std::vector< std::shared_ptr<app::Player> >& players, 
-						  const app::GameSession::lostObjectsId lostObjects);							//Выдать состояние игры + потерянные объекты
-	std::string PlayerAction();																			//Действия игорька
-	std::string PlayerInvalidAction();																	//Кривые действия игорька
-	std::string InvalidContentType();																	//Кривое поле контент тупе
-	std::string SetDeltaTime();																			//Установка дельты времени
-	std::string InvalidDeltaTime();																		//Пришла кривая дельта
-	std::string InvalidEndpoint();																		//Кривой эндпоинт
-	std::string RecordTable(std::vector<app::PlayerDataForPostgres> data);								//Выдать таблицу рекордов
+						  const app::GameSession::lostObjectsId lostObjects);
+	std::string PlayerAction();
+	std::string PlayerInvalidAction();
+	std::string InvalidContentType();
+	std::string SetDeltaTime();
+	std::string InvalidDeltaTime();
+	std::string InvalidEndpoint();
+	std::string RecordTable(std::vector<app::PlayerDataForPostgres> data);
 
 	std::string OnlyPostMethodAllowed();															
-	std::optional< std::tuple<std::string, model::Map::Id> > ParseJoinToGame(const std::string& msg);	//Распарсить реквест входа в игру
-	std::optional<std::string> ParsePlayerActionRequest(const std::string& msg);						//Парсим то, что передали на действие
-	std::optional<int> ParseSetDeltaTimeRequest(const std::string& msg);								//Парсим дельта тайм запрос	
+	std::optional< std::tuple<std::string, model::Map::Id> > ParseJoinToGame(const std::string& msg);
+	std::optional<std::string> ParsePlayerActionRequest(const std::string& msg);
+	std::optional<int> ParseSetDeltaTimeRequest(const std::string& msg);
 
 }

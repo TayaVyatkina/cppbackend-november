@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace app {
+
     class PlayerDataForPostgres {
     public:
         PlayerDataForPostgres(std::string name, size_t score, int64_t playTime)

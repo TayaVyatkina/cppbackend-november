@@ -3,9 +3,8 @@
 #include <map>
 #include <sstream>
 #include <boost/json/array.hpp>
-#include <boost/json.hpp>                                                                   //Возврат на буст. Он читабельнее, хоть и менее понятен
+#include <boost/json.hpp>
 
-/*Всё что ниже переделано на буст с jsoncpp*/
 namespace jsonOperation {
 
     std::string GameToJson(const model::Game::Maps& game) {
@@ -109,6 +108,7 @@ namespace jsonOperation {
             return std::tie(player_name, map_id);
         }
         catch (...) {
+            std::cerr << "json parsing error" << std::endl;
             return std::nullopt;
         }
     };
@@ -179,6 +179,7 @@ namespace jsonOperation {
             return direction;
         }
         catch (...) {
+            std::cerr << "parsing player action error" << std::endl;
             return std::nullopt;
         }
     };
@@ -210,6 +211,7 @@ namespace jsonOperation {
             return time_delta;
         }
         catch (...) {
+            std::cerr << "setting delta time request error" << std::endl;
             return std::nullopt;
         }
     };

@@ -1,7 +1,6 @@
 #include "logger.h"
 #include "error_handler.h"
 
-
 namespace errorHandler {
 
     using namespace std::literals;

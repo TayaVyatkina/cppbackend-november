@@ -16,7 +16,6 @@ namespace postgres {
     {
         auto connection = connectionPool_.GetConnection();
         pqxx::work work{ *connection };
-        /*https://metanit.com/sql/postgresql/2.3.php шпаргалка с типами данных*/
         work.exec(R"(
 CREATE TABLE IF NOT EXISTS retired_players (
     id SERIAL PRIMARY KEY,
@@ -36,7 +35,6 @@ CREATE INDEX IF NOT EXISTS idx_score ON retired_players (score);
         auto conn = connectionPool_.GetConnection();
         pqxx::work work{ *conn };
         for (const auto& plData : data) {
-            /*https://metanit.com/sql/postgresql/3.1.php шпаргалка для INSERT*/
             work.exec_params(R"(
             INSERT INTO retired_players (name, score, playTime) VALUES ($1, $2, $3);
             )"_zv,
@@ -51,7 +49,6 @@ CREATE INDEX IF NOT EXISTS idx_score ON retired_players (score);
 
         auto conn = connectionPool_.GetConnection();
         pqxx::read_transaction transact{ *conn };
-        /*https://metanit.com/sql/postgresql/4.2.php шпаргалка для сортировки*/
         auto q = "SELECT name, score, playTime FROM retired_players ORDER BY score DESC, playTime ASC, name ASC LIMIT "
             + std::to_string(limit) + " OFFSET " + std::to_string(offset) + ";";
 

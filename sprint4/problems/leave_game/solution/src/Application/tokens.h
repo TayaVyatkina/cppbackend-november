@@ -2,7 +2,6 @@
 #include "tagged.h"
 #include "player.h"
 
-
 #include <random>
 #include <unordered_map>
 #include <memory>

@@ -3,8 +3,6 @@
 #include <optional>
 #include <string>
 
-
-
 namespace programm_option {
 
     struct Args {
@@ -16,7 +14,7 @@ namespace programm_option {
         size_t saved_tick_period{ 0 };
     };
 
-    [[nodiscard]] std::optional<Args> ParseCommandLine(int argc, const char* const argv[]);        //Парсинг командной строки
+    [[nodiscard]] std::optional<Args> ParseCommandLine(int argc, const char* const argv[]);
 
     class ConfigFileNotSpecifiedException : public std::exception {
     public:

@@ -18,11 +18,9 @@
 #include <memory>
 #include <unordered_map>
 
-
 namespace app {
 
     namespace net = boost::asio;
-
 
     class GameSession : public std::enable_shared_from_this<GameSession> {
     public:

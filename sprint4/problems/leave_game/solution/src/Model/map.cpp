@@ -1,6 +1,7 @@
 #include "map.h"
 #include "tag_invoke_handler.h"
 #include <stdexcept>
+#include <iostream>
 
 namespace model {
     using namespace std::literals;
@@ -15,9 +16,8 @@ namespace model {
         try {
             warehouse_id_to_index_.emplace(o.GetId(), index);
         }
-        catch (...) {
-            
-            offices_.pop_back();  // Возвращаем всё назад, из-за исключения
+        catch (...) {      
+            offices_.pop_back();
             throw;
         }
     }
@@ -88,7 +88,7 @@ namespace model {
             double dog_speed = json::value_to<double>(jv.as_object().at(MAP_DOG_SPEED));
             map.SetDogSpeed(dog_speed);
         }
-        catch (...) {}
+        catch (...) {std::cerr << "setting dog speed error" << std::endl;}
         return map;
     };
 
@@ -98,4 +98,4 @@ namespace model {
         return roadLayout_.GetValidMove(current_pos, target_pos, current_spd);
     };
 
-}  // namespace model
+}

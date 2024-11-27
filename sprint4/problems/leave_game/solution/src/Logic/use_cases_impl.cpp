@@ -15,4 +15,4 @@ namespace postgres {
         return playerDataForPostgres_.GetData(offset, limit);
     };
 
-}  // namespace app
+}

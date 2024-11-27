@@ -6,10 +6,8 @@
 #include <memory>
 #include <mutex>
 
-
 namespace Connection {
 
-    /*Из теории урока Диплом → Урок 3/6: Добавляем БД в игру*/
     class ConnectionPool {
         using PoolType = ConnectionPool;
         using ConnectionPtr = std::shared_ptr<pqxx::connection>;
@@ -48,7 +46,6 @@ namespace Connection {
             PoolType* pool_;
         };
 
-        // ConnectionFactory is a functional object returning std::shared_ptr<pqxx::connection>
         template <typename ConnectionFactory>
         ConnectionPool(size_t capacity, ConnectionFactory&& connection_factory) {
             pool_.reserve(capacity);
@@ -59,29 +56,22 @@ namespace Connection {
 
         ConnectionWrapper GetConnection() {
             std::unique_lock lock{ mutex_ };
-            // Блокируем текущий поток и ждём, пока cond_var_ не получит уведомление и не освободится
-            // хотя бы одно соединение
             cond_var_.wait(lock, [this] {
                 return used_connections_ < pool_.size();
                 });
-            // После выхода из цикла ожидания мьютекс остаётся захваченным
 
             return { std::move(pool_[used_connections_++]), *this };
         }
 
     private:
         void ReturnConnection(ConnectionPtr&& conn) {
-            // Возвращаем соединение обратно в пул
             {
                 std::lock_guard lock{ mutex_ };
                 if (used_connections_ == 0) {      
-                    //В теории был assert, заменено на исключение...
-                    //Когда нет используемых коннектов, но метод возврата вызвался
                     throw std::out_of_range("No used connection, but return");
                 }
                 pool_[--used_connections_] = std::move(conn);
             }
-            // Уведомляем один из ожидающих потоков об изменении состояния пула
             cond_var_.notify_one();
         }
 

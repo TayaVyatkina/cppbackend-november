@@ -64,10 +64,10 @@ int main(int argc, const char* argv[]) {
 #ifndef DEBUG
         const char* postgresDbURL = std::getenv(GAME_DB_URL);
         if (!postgresDbURL) {
-            throw std::invalid_argument("Database URL not valid");                          //Что-то кривое пришло.
+            throw std::invalid_argument("Database URL not valid"); 
         }
 #else
-        std::string postgresDbURL = "postgres://postgres:12345@localhost:5432/GameServer";        //для дебага
+        std::string postgresDbURL = "postgres://postgres:12345@localhost:5432/GameServer";  
 #endif
         Connection::ConnectionConfig connectionCfg{ num_threads, std::move(postgresDbURL) };
 
@@ -75,13 +75,13 @@ int main(int argc, const char* argv[]) {
 #ifndef DEBUG
         model::Game game = json_loader::LoadGame(args.value().config_file);
 #else
-        model::Game game = json_loader::LoadGame("data/config.json");                       //для дебага
+        model::Game game = json_loader::LoadGame("data/config.json");                       
 #endif
         // 2. Устанавливаем путь до статического контента.
 #ifndef DEBUG
         std::filesystem::path staticContentPath{ args.value().www_root };
 #else
-        std::filesystem::path staticContentPath{"static"};                                  //для дебага
+        std::filesystem::path staticContentPath{"static"};                                  
 #endif
         // 3. Инициализируем io_context
         
