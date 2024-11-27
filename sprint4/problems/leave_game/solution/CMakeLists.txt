@@ -61,8 +61,8 @@ add_executable(game_server
 	src/Application/game_session.h
 	src/Application/game_session.cpp
 	src/Application/player.h
-	src/Application/player.cpp
 	src/Application/player_data_record.h
+	src/Application/player.cpp
 	src/Application/tokens.h
 	src/Application/tokens.cpp
 	src/Logic/command.h
@@ -70,7 +70,7 @@ add_executable(game_server
 	src/Logic/error_handler.h
 	src/Logic/error_handler.cpp
 	src/Logic/file_system.cpp
-    src/Logic/file_system.h
+	src/Logic/file_system.h
 	src/Logic/json_loader.h
 	src/Logic/json_loader.cpp
 	src/Logic/json_handler.h
@@ -80,8 +80,7 @@ add_executable(game_server
 	src/Logic/logger.cpp
 	src/Logic/logging_handler.cpp
 	src/Logic/logging_handler.h
-
-    src/Logic/lo_serialize.h
+	src/Logic/lo_serialize.h
 	src/Logic/lo_serialize.cpp
 	src/Logic/player_serialize.h
 	src/Logic/player_serialize.cpp
@@ -89,13 +88,13 @@ add_executable(game_server
 	src/Logic/game_session_serialize.cpp
 	src/Logic/dog_serialize.h
 	src/Logic/dog_serialize.cpp
-
 	src/Server/api_request_handler.h
 	src/Server/api_request_handler_proxy.h
 	src/Server/static_file_request_handler.h
 	src/Server/static_file_request_handler_proxy.h
 	src/Server/request_handler.h
 	src/Server/request_handler_unit.h
+	src/Server/request_handler.cpp
 	src/Server/http_server.cpp
 	src/Server/http_server.h
 	src/Logic/ticker.h
@@ -112,10 +111,8 @@ target_include_directories(game_server PRIVATE
 	src
 	src/Application
 	src/Logic
-	src/Model
 	src/Server
 )
-
 target_link_libraries(game_server PRIVATE Threads::Threads CONAN_PKG::boost CONAN_PKG::libpq CONAN_PKG::libpqxx UserStaticLib)
 
 include(CTest)

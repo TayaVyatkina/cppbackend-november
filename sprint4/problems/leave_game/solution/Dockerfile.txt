@@ -6,8 +6,6 @@ FROM gcc:11.3 as build
 # <tag> — необязательный параметр, указывает конкретную версию образа - 11.3 
 # <name> - имя контейнера
 
-RUN sed -i 's/deb.debian.org/ftp.ru.debian.org/g' /etc/apt/sources.list
-
 # Выполнить установку зависимостей внутри контейнера.
 RUN apt update && \
     apt install -y \
@@ -39,7 +37,6 @@ COPY CMakeLists.txt /app/
 RUN cd /app/build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
     cmake --build . -j4
-    #cmake --build . --parallel 12 
 
 # Контейнер для запуска сервера
 FROM ubuntu:22.04 as run
